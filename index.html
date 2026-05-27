@@ -1,0 +1,1006 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>alas — asesoría legal de artistas y sellos</title>
+<meta name="description" content="ALAS · Asesoría Legal de Artistas y Sellos. Contratos, royalties y derechos para quienes hacen música." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============================================================
+     ALAS · asesoría legal de artistas y sellos
+     ============================================================ */
+  :root {
+    --ink:        #1a1410;
+    --ink-soft:   #251c16;
+    --ink-deep:   #100b08;
+    --paper:      #efe9dc;
+    --paper-dim:  rgba(239, 233, 220, 0.62);
+    --paper-quiet:rgba(239, 233, 220, 0.34);
+    --rule:       rgba(239, 233, 220, 0.16);
+    --accent:     #d4c089;
+    --rust:       #efe9dc;
+    --sans:       "Geist", "Inter", "Helvetica Neue", Helvetica, system-ui, sans-serif;
+    --mono:       "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --ease-out:   cubic-bezier(.22,.65,.12,1);
+    --ease-soft:  cubic-bezier(.4,0,.2,1);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--ink-deep); color: var(--paper); }
+  body {
+    font-family: var(--sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "ss03", "cv11";
+    overflow-x: hidden;
+    cursor: none;
+  }
+  a, button { cursor: none; }
+  ::selection { background: var(--accent); color: var(--ink); }
+
+  /* =========================================================
+     CURSOR
+     ========================================================= */
+  .cursor, .cursor-ring {
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    border-radius: 50%;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+  .cursor       { width: 6px;  height: 6px;  background: #efe9dc; }
+  .cursor-ring  {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(239,233,220,0.55);
+    transition: width .25s var(--ease-soft), height .25s var(--ease-soft), border-color .25s var(--ease-soft);
+  }
+  .cursor-ring.is-hot { width: 72px; height: 72px; border-color: rgba(239,233,220,0.95); }
+  @media (pointer: coarse) {
+    body, a, button { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+
+  /* =========================================================
+     CHROME — oculto al cargar, aparece al final
+     ========================================================= */
+  .chrome {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 24px clamp(24px, 4vw, 56px);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-12px);
+    transition: opacity 700ms var(--ease-soft), transform 700ms var(--ease-out);
+  }
+  .chrome.is-on { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+  .wordmark {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.045em;
+    text-transform: lowercase;
+    color: var(--paper);
+    text-decoration: none;
+    line-height: 1;
+    mix-blend-mode: difference;
+  }
+  .wordmark::after {
+    content: "®";
+    font-family: var(--mono);
+    font-weight: 400;
+    font-size: 9px;
+    letter-spacing: 0;
+    vertical-align: top;
+    margin-left: 2px;
+    color: var(--paper-dim);
+    text-transform: none;
+  }
+
+  .clock {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--paper-dim);
+    text-transform: uppercase;
+    mix-blend-mode: difference;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .clock::before {
+    content: "";
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px rgba(212,192,137,0.22);
+    animation: pulse 2.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(212,192,137,0.22); }
+    50%      { box-shadow: 0 0 0 7px rgba(212,192,137,0); }
+  }
+  .clock .live { color: var(--paper); font-variant-numeric: tabular-nums; }
+
+  /* =========================================================
+     SCENE
+     ========================================================= */
+  .scene { position: relative; height: 480vh; }
+  .stage {
+    position: sticky;
+    top: 0;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    /* gradiente cálido como fallback mientras el vídeo carga —
+       evita pantalla negra completa en móviles lentos */
+    background:
+      radial-gradient(120% 80% at 50% 50%, #2d2419 0%, #1a1410 60%, #100b08 100%);
+  }
+  .bg-video {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    background: var(--ink);
+    will-change: opacity;
+  }
+  .bg-video.marble {
+    filter: grayscale(0.65) brightness(0.95) contrast(1.05) saturate(0.55);
+    z-index: 1;
+  }
+  .bg-video.clouds {
+    /* fondo del hero final — nubes en movimiento */
+    filter: brightness(0.85) contrast(1.08) saturate(0.55);
+    z-index: 2;
+    opacity: 0;
+  }
+
+  /* light pool que sigue al cursor */
+  .light-pool {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(
+      260px 260px at var(--lx, 50%) var(--ly, 50%),
+      rgba(239,233,220,0.16) 0%,
+      rgba(239,233,220,0.05) 35%,
+      transparent 70%
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+  }
+  .stage:hover .light-pool { opacity: 1; }
+
+  /* viñeta cálida — más sutil para que no oscurezca demasiado */
+  .stage::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(90% 70% at 50% 50%, rgba(26,20,16,0) 0%, rgba(26,20,16,0.18) 70%, rgba(26,20,16,0.48) 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+  .stage .grain {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(rgba(239,233,220,0.05) 0.5px, transparent 0.5px),
+      radial-gradient(rgba(0,0,0,0.18) 0.5px, transparent 0.5px);
+    background-size: 3px 3px, 5px 5px;
+    background-position: 0 0, 1px 2px;
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    z-index: 6;
+  }
+
+  /* Cutout SVG */
+  .cutout-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    z-index: 7;
+    pointer-events: none;
+    will-change: opacity;
+  }
+
+  /* Ghost del wordmark */
+  .ghost-wordmark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 8;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: clamp(120px, 22vw, 380px);
+    letter-spacing: -0.055em;
+    line-height: 0.85;
+    text-transform: lowercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(239,233,220,0.18);
+    pointer-events: none;
+    user-select: none;
+    will-change: opacity, transform;
+    mix-blend-mode: overlay;
+  }
+
+  /* =========================================================
+     MANIFIESTO (pantalla intermedia)
+     ========================================================= */
+  .manifesto {
+    position: absolute;
+    inset: 0;
+    z-index: 11;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(24px, 4vw, 56px);
+    pointer-events: none;
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  .manifesto-line {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(40px, 7vw, 124px);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+    margin: 0;
+    text-align: center;
+    color: var(--paper);
+    white-space: nowrap;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.28em;
+    flex-wrap: nowrap;
+  }
+  .manifesto-line .static { display: inline-block; }
+  .manifesto-line .swap-wrap {
+    display: inline-block;
+    overflow: hidden;
+    line-height: 1.05;
+    height: 1.05em;
+    vertical-align: bottom;
+    color: var(--rust);
+    position: relative;
+  }
+  .manifesto-line .swap-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    transform: translateY(0);
+    transition: transform 700ms var(--ease-out);
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .manifesto-line .swap-list li {
+    height: 1.05em;
+    line-height: 1.05;
+    white-space: nowrap;
+    padding: 0;
+    font-style: italic;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    color: inherit;
+  }
+
+  /* =========================================================
+     DOVE PHASE — REMOVIDA
+     ========================================================= */
+
+  /* Scroll hint */
+  .scroll-hint {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 14;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper-dim);
+    mix-blend-mode: difference;
+    will-change: opacity;
+  }
+  .scroll-hint .line {
+    display: block;
+    width: 1px;
+    height: 32px;
+    background: currentColor;
+    animation: lineDown 1.8s ease-in-out infinite;
+    transform-origin: top;
+  }
+  @keyframes lineDown {
+    0%   { transform: scaleY(0); opacity: 0; }
+    40%  { transform: scaleY(1); opacity: 1; }
+    100% { transform: scaleY(1) translateY(32px); opacity: 0; }
+  }
+
+  /* phase indicator REMOVED */
+
+  /* =========================================================
+     HERO FINAL
+     ========================================================= */
+  .hero-final {
+    position: absolute;
+    inset: 0;
+    z-index: 13;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 clamp(24px, 4vw, 56px);
+    opacity: 0;
+    will-change: opacity;
+    pointer-events: none;
+  }
+  .hero-final.is-on { pointer-events: auto; }
+
+  .hero-final h1 {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: clamp(42px, 6vw, 100px);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
+    margin: 0 0 clamp(36px, 5vh, 56px);
+    text-wrap: pretty;
+    color: var(--paper);
+    max-width: 1180px;
+  }
+  .hero-final h1 .line-mask { display: block; overflow: hidden; }
+  .hero-final h1 .char {
+    display: inline-block;
+    transform: translateY(110%);
+    transition: transform 850ms var(--ease-out);
+    will-change: transform;
+  }
+  .hero-final h1 .char.space {
+    width: 0.32em;
+    transform: none !important;
+    transition: none;
+  }
+  .hero-final.is-on h1 .char { transform: translateY(0); }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 700ms ease 700ms, transform 700ms var(--ease-out) 700ms;
+  }
+  .hero-final.is-on .actions { opacity: 1; transform: translateY(0); }
+
+  .pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    padding: 14px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid var(--paper);
+    color: var(--paper);
+    background: transparent;
+    transition: background 260ms ease, color 260ms ease;
+    overflow: hidden;
+    isolation: isolate;
+    will-change: transform;
+  }
+  .pill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--paper);
+    border-radius: inherit;
+    transform: translateY(100%);
+    transition: transform 360ms var(--ease-out);
+    z-index: -1;
+  }
+  .pill:hover::before { transform: translateY(0); }
+  .pill-solid { background: var(--paper); color: var(--ink); }
+  .pill-solid::before { background: var(--ink); }
+  .pill-solid:hover { color: var(--paper); }
+  .pill-line:hover  { color: var(--ink); }
+  .pill .arrow { transition: transform 260ms ease; display: inline-block; }
+  .pill:hover .arrow { transform: translate(3px, -3px); }
+  .pill-solid:hover .arrow { transform: translateX(3px); }
+
+  .actions-meta {
+    margin-top: 22px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--paper-quiet);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 600ms ease 1100ms;
+  }
+  .hero-final.is-on .actions-meta { opacity: 1; }
+
+  /* =========================================================
+     PROGRESS BAR
+     ========================================================= */
+  .progress {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 1px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 60;
+    transition: width .08s linear;
+    mix-blend-mode: difference;
+  }
+
+  /* =========================================================
+     MARQUEE
+     ========================================================= */
+  .marquee {
+    position: relative;
+    z-index: 10;
+    background: var(--paper);
+    color: var(--ink);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 56px;
+    padding: 22px 0;
+    animation: marquee 42s linear infinite;
+    font-family: var(--sans);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.018em;
+  }
+  .marquee-track > span { display: inline-flex; align-items: center; gap: 56px; }
+  .marquee-track a { color: inherit; text-decoration: none; transition: opacity .2s; }
+  .marquee-track a:hover { opacity: 0.55; }
+  .marquee-track .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ink);
+    flex-shrink: 0;
+  }
+  @keyframes marquee {
+    from { transform: translate3d(0,0,0); }
+    to   { transform: translate3d(-50%,0,0); }
+  }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  .foot {
+    position: relative;
+    z-index: 10;
+    background: var(--ink);
+    color: var(--paper-dim);
+    padding: 28px clamp(24px, 4vw, 56px) 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .foot .center { text-align: center; }
+  .foot .right  { text-align: right; }
+  .foot a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(239,233,220,0.25); padding-bottom: 1px; }
+  .foot a:hover { color: var(--paper); }
+
+  /* swatch picker eliminado */
+
+  /* =========================================================
+     MOBILE
+     ========================================================= */
+  /* ---------- TABLET ---------- */
+  @media (max-width: 1024px) {
+    .scene { height: 460vh; }
+    .hero-final h1 { font-size: clamp(36px, 7vw, 72px); }
+    .manifesto-line { font-size: clamp(42px, 8.5vw, 88px); }
+  }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 720px) {
+    body, a, button { cursor: auto; }
+    .cursor, .cursor-ring, .light-pool { display: none; }
+
+    /* Chrome */
+    .chrome { padding: 18px 20px; gap: 12px; }
+    .wordmark { font-size: 20px; }
+    .clock { font-size: 10px; letter-spacing: 0.1em; gap: 8px; }
+
+    /* Ghost wordmark más compacto */
+    .ghost-wordmark { font-size: clamp(80px, 26vw, 200px); }
+
+    /* Manifesto: stack en vertical (2 líneas) */
+    .manifesto-line {
+      flex-direction: column;
+      gap: 0.04em;
+      font-size: clamp(40px, 11vw, 64px);
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .manifesto-line .static { display: block; }
+    .manifesto-line .swap-wrap { display: block; }
+    .manifesto-line .swap-list { align-items: center; }
+    .manifesto-line .swap-list li { letter-spacing: -0.04em; }
+
+    /* Hero final */
+    .hero-final { padding: 0 20px; }
+    .hero-final h1 {
+      font-size: clamp(30px, 8.5vw, 48px);
+      margin: 0 0 32px;
+      line-height: 1.06;
+      letter-spacing: -0.03em;
+    }
+
+    /* Actions: pills apiladas a ancho completo */
+    .actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      gap: 10px;
+    }
+    .pill {
+      width: 100%;
+      justify-content: space-between;
+      padding: 16px 22px;
+      font-size: 14px;
+    }
+    .actions-meta { font-size: 10px; letter-spacing: 0.04em; }
+
+    /* Scroll */
+    .scene { height: 380vh; }
+    .scroll-hint { bottom: 24px; font-size: 9px; letter-spacing: 0.18em; }
+    .scroll-hint .line { height: 24px; }
+
+    /* Marquee */
+    .marquee-track { font-size: 16px; gap: 36px; padding: 16px 0; }
+    .marquee-track > span { gap: 36px; }
+
+    /* Footer */
+    .foot {
+      grid-template-columns: 1fr;
+      text-align: left;
+      padding: 24px 20px 28px;
+      gap: 14px;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+    }
+    .foot .center, .foot .right { text-align: left; }
+  }
+
+  /* ---------- EXTRA SMALL ---------- */
+  @media (max-width: 380px) {
+    .clock { display: none; }
+    .manifesto-line { font-size: 34px; }
+    .hero-final h1 { font-size: 26px; }
+    .pill { font-size: 13px; padding: 14px 18px; }
+  }
+
+  /* ---------- LANDSCAPE PHONE (alturas reducidas) ---------- */
+  @media (max-width: 900px) and (max-height: 500px) and (orientation: landscape) {
+    .hero-final h1 { font-size: clamp(24px, 5vw, 36px); margin-bottom: 18px; }
+    .manifesto-line { font-size: clamp(32px, 6vw, 56px); }
+    .pill { padding: 10px 16px; font-size: 13px; }
+    .scroll-hint { bottom: 16px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clock::before, .scroll-hint .line, .marquee-track { animation: none; }
+    .hero-final h1 .char { transform: translateY(0); }
+    .hero-final, .actions, .actions-meta, .chrome, .manifesto { opacity: 1 !important; transform: none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <header class="chrome" id="chrome">
+    <a href="/" class="wordmark" data-hot>alas</a>
+    <span class="clock">cet · <span class="live" id="clock">--:--:--</span></span>
+  </header>
+
+  <section class="scene" id="scene">
+    <div class="stage" id="stage">
+
+      <!-- ============ Vídeos de fondo ============ -->
+      <video class="bg-video marble" id="marbleVideo" src="hero.mp4"
+        autoplay muted loop playsinline webkit-playsinline="true" preload="auto" disablepictureinpicture aria-hidden="true"></video>
+
+      <video class="bg-video clouds" id="cloudsVideo" src="clouds.mp4"
+        autoplay muted loop playsinline webkit-playsinline="true" preload="auto" disablepictureinpicture aria-hidden="true"></video>
+
+      <div class="light-pool" id="lightPool" aria-hidden="true"></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      <!-- ============ Cutout phase ============ -->
+      <span class="ghost-wordmark" id="ghostWordmark" aria-hidden="true">alas</span>
+
+      <svg class="cutout-svg" id="cutoutSvg" viewBox="0 0 1600 900"
+        preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <mask id="alasMask">
+            <rect width="100%" height="100%" fill="#fff"/>
+            <text id="maskText" x="800" y="600" text-anchor="middle"
+              font-family="Geist, Inter, Helvetica Neue, sans-serif"
+              font-weight="700" font-size="460" fill="#000"
+              style="letter-spacing:-22px;">alas</text>
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="#1a1410" mask="url(#alasMask)"/>
+      </svg>
+
+      <!-- ============ Manifiesto (intermedio) ============ -->
+      <div class="manifesto" id="manifesto" aria-hidden="true">
+        <h2 class="manifesto-line">
+          <span class="static">para los que</span>
+          <span class="swap-wrap" id="swapWrap">
+            <ul class="swap-list" id="swapList">
+              <li>firman.</li>
+              <li>componen.</li>
+              <li>producen.</li>
+              <li>distribuyen.</li>
+              <li>suenan.</li>
+            </ul>
+          </span>
+        </h2>
+      </div>
+
+      <!-- ============ Hero final ============ -->
+      <div class="hero-final" id="heroFinal">
+        <h1 id="heroH1">
+          <span class="line-mask" data-line="Asesoría legal"></span>
+          <span class="line-mask" data-line="de artistas y sellos."></span>
+        </h1>
+        <div class="actions">
+          <a class="pill pill-solid" href="mailto:hola@alaslegal.com?subject=Hola%20alas" data-hot data-magnetic>
+            escribir a hola@alaslegal.com
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="pill pill-line" href="https://cal.com/alaslegal" target="_blank" rel="noopener" data-hot data-magnetic>
+            agendar una llamada
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <div class="actions-meta">respuesta menor a 24 h · sin compromiso</div>
+      </div>
+
+      <!-- scroll hint -->
+      <span class="scroll-hint" id="scrollHint">
+        <span>scroll para descubrir</span>
+        <span class="line"></span>
+      </span>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track" id="marqueeTrack"></div>
+  </div>
+
+  <footer class="foot">
+    <span><a href="mailto:hola@alaslegal.com">hola@alaslegal.com</a></span>
+    <span class="center">aviso legal · privacidad</span>
+    <span class="right">© alas® 2026 · todos los derechos reservados</span>
+  </footer>
+
+  <div class="progress" id="progress"></div>
+
+<script>
+(() => {
+  const $  = (id) => document.getElementById(id);
+  const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  const lerp  = (a, b, t) => a + (b - a) * t;
+  const smoothstep = (a, b, x) => {
+    const t = clamp((x - a) / (b - a), 0, 1);
+    return t * t * (3 - 2 * t);
+  };
+  const easeInCubic = t => t * t * t;
+
+  /* ---------- Split text ---------- */
+  $$('.line-mask').forEach(el => {
+    const text = el.dataset.line || el.textContent;
+    el.textContent = '';
+    [...text].forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'char' + (ch === ' ' ? ' space' : '');
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      span.style.transitionDelay = (i * 22) + 'ms';
+      el.appendChild(span);
+    });
+  });
+
+  /* ---------- Live clock CET ---------- */
+  const clockEl = $('clock');
+  function tickClock() {
+    const fmt = new Intl.DateTimeFormat('es-ES', {
+      hour:'2-digit', minute:'2-digit', second:'2-digit',
+      hour12:false, timeZone:'Europe/Madrid',
+    });
+    clockEl.textContent = fmt.format(new Date());
+  }
+  tickClock(); setInterval(tickClock, 1000);
+
+  /* ---------- Marquee ---------- */
+  const items = [
+    '<a href="mailto:hola@alaslegal.com">hola@alaslegal.com</a>',
+    'contratos · royalties · derechos',
+    '<a href="https://cal.com/alaslegal">cal.com/alaslegal</a>',
+    'asesoría legal de artistas y sellos',
+    'defensa · advisory · publishing',
+    'alas® 2026',
+  ];
+  const cell = items.map(t => `<span>${t}</span><span class="dot"></span>`).join('');
+  $('marqueeTrack').innerHTML = `<span>${cell}</span><span>${cell}</span>`;
+
+  /* ---------- Refs ---------- */
+  const scene       = $('scene');
+  const maskText    = $('maskText');
+  const cutoutSvg   = $('cutoutSvg');
+  const ghost       = $('ghostWordmark');
+  const marbleVideo = $('marbleVideo');
+  const cloudsVideo = $('cloudsVideo');
+  const manifesto   = $('manifesto');
+  const swapList    = $('swapList');
+  const heroFinal   = $('heroFinal');
+  const scrollHint  = $('scrollHint');
+  const progress    = $('progress');
+  const chrome      = $('chrome');
+
+  /* ---------- Phase boundaries ---------- */
+  const PHASES = {
+    cutoutEnd:    0.30,
+    manifestoIn:  0.34,
+    manifestoOut: 0.60,
+    transitionIn: 0.58,   // mármol → alas (fondo final)
+    transitionEnd:0.74,
+    heroStart:    0.72,
+    heroEnd:      0.92,
+    chromeIn:     0.92,
+  };
+
+  const FS_START = 460;
+  const FS_END   = 3600;
+
+  /* ---------- Viewport-aware cutout geometry ----------
+     El viewBox y la posición del texto se recalculan al tamaño
+     real del viewport para que en móvil no se corte */
+  let vwCache = window.innerWidth;
+  let vhCache = window.innerHeight;
+  let isPortrait = vhCache > vwCache;
+  function updateCutoutGeometry() {
+    vwCache = window.innerWidth;
+    vhCache = window.innerHeight;
+    isPortrait = vhCache > vwCache;
+    cutoutSvg.setAttribute('viewBox', `0 0 ${vwCache} ${vhCache}`);
+    maskText.setAttribute('x', vwCache / 2);
+    maskText.setAttribute('y', vhCache * 0.62);
+  }
+  updateCutoutGeometry();
+  window.addEventListener('resize', updateCutoutGeometry);
+  window.addEventListener('orientationchange', updateCutoutGeometry);
+
+  function currentFontSize(grow) {
+    // tamaño relativo al viewport — funciona en cualquier ratio
+    const start = isPortrait
+      ? vwCache * 0.55         // móvil vertical: casi ancho completo
+      : vwCache * 0.30;        // desktop / landscape: más pequeño
+    const end   = Math.max(vwCache, vhCache) * 5;
+    return start + (end - start) * grow;
+  }
+
+  /* ---------- Swap-list (cycling words) ---------- */
+  const SWAP_COUNT = swapList.children.length;
+  // alturas se calculan en runtime para que respete el line-height real
+  function getSwapItemHeight() {
+    return swapList.children[0].getBoundingClientRect().height;
+  }
+
+  /* ---------- Scroll handler ---------- */
+  let currentScroll = window.scrollY;
+  function loop() {
+    const target = window.scrollY;
+    currentScroll = lerp(currentScroll, target, 0.12);
+    if (Math.abs(target - currentScroll) < 0.4) currentScroll = target;
+    update(currentScroll);
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  const PHASE_LABELS_REMOVED = null;
+
+  function update(scrollY) {
+    /* Progress global */
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (clamp(scrollY/docH, 0, 1) * 100).toFixed(2) + '%';
+
+    /* Progress de la escena */
+    const sceneStart = scene.offsetTop;
+    const sceneEnd   = sceneStart + scene.offsetHeight - window.innerHeight;
+    const p = clamp((scrollY - sceneStart) / (sceneEnd - sceneStart || 1), 0, 1);
+
+    /* === 1. Cutout grows === */
+    const grow = easeInCubic(clamp(p / PHASES.cutoutEnd, 0, 1));
+    const fs   = currentFontSize(grow);
+    maskText.setAttribute('font-size', fs);
+    maskText.style.letterSpacing = (-fs * 0.048) + 'px';
+
+    const maskOp = 1 - smoothstep(PHASES.cutoutEnd - 0.04, PHASES.cutoutEnd + 0.02, p);
+    cutoutSvg.style.opacity = maskOp.toFixed(3);
+
+    /* === 2. Ghost wordmark === */
+    const ghostP = smoothstep(0.04, 0.2, p) * (1 - smoothstep(PHASES.cutoutEnd - 0.08, PHASES.cutoutEnd, p));
+    ghost.style.opacity = (ghostP * 0.9).toFixed(3);
+
+    /* === 3. Crossfade mármol → nubes (transición al hero) === */
+    const trans = smoothstep(PHASES.transitionIn, PHASES.transitionEnd, p);
+    cloudsVideo.style.opacity = trans.toFixed(3);
+    marbleVideo.style.opacity = (1 - trans).toFixed(3);
+
+    /* === 4. Manifesto fade in/out === */
+    const manIn  = smoothstep(PHASES.manifestoIn,  PHASES.manifestoIn + 0.06,  p);
+    const manOut = 1 - smoothstep(PHASES.manifestoOut, PHASES.manifestoOut + 0.06, p);
+    const manOp = Math.min(manIn, manOut);
+    manifesto.style.opacity = manOp.toFixed(3);
+
+    /* swap-list translateY: cicla 5 palabras durante el manifesto */
+    const manP = clamp((p - PHASES.manifestoIn) / (PHASES.manifestoOut - PHASES.manifestoIn), 0, 1);
+    const idx  = clamp(Math.floor(manP * (SWAP_COUNT)), 0, SWAP_COUNT - 1);
+    const h    = getSwapItemHeight() || 0;
+    swapList.style.transform = `translateY(${-idx * h}px)`;
+
+    /* === 6. Hero final reveal === */
+    const heroIn = smoothstep(PHASES.heroStart, PHASES.heroEnd, p);
+    heroFinal.style.opacity = heroIn.toFixed(3);
+    heroFinal.classList.toggle('is-on', heroIn > 0.4);
+
+    /* === 7. Scroll hint fade === */
+    scrollHint.style.opacity = (1 - smoothstep(0, 0.06, p)).toFixed(3);
+
+    /* === 8. Chrome === */
+    chrome.classList.toggle('is-on', p > PHASES.chromeIn);
+  }
+
+  /* ---------- Cursor ---------- */
+  const cursor     = $('cursor');
+  const cursorRing = $('cursorRing');
+  const lightPool  = $('lightPool');
+  const stage      = $('stage');
+  let cx = window.innerWidth/2, cy = window.innerHeight/2;
+  let rx = cx, ry = cy;
+  window.addEventListener('mousemove', e => {
+    cx = e.clientX; cy = e.clientY;
+    cursor.style.transform = `translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;
+    const r = stage.getBoundingClientRect();
+    if (cy >= r.top && cy <= r.bottom) {
+      lightPool.style.setProperty('--lx', (cx - r.left) + 'px');
+      lightPool.style.setProperty('--ly', (cy - r.top)  + 'px');
+    }
+  });
+  (function cursorLoop() {
+    rx = lerp(rx, cx, 0.18);
+    ry = lerp(ry, cy, 0.18);
+    cursorRing.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+    requestAnimationFrame(cursorLoop);
+  })();
+  $$('[data-hot]').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('is-hot'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('is-hot'));
+  });
+
+  /* ---------- Magnetic buttons ---------- */
+  $$('[data-magnetic]').forEach(el => {
+    let raf = 0;
+    let tx = 0, ty = 0, ax = 0, ay = 0;
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      tx = (e.clientX - r.left - r.width/2)  * 0.22;
+      ty = (e.clientY - r.top  - r.height/2) * 0.22;
+      if (!raf) raf = requestAnimationFrame(magLoop);
+    });
+    el.addEventListener('mouseleave', () => {
+      tx = 0; ty = 0;
+      if (!raf) raf = requestAnimationFrame(magLoop);
+    });
+    function magLoop() {
+      ax = lerp(ax, tx, 0.18);
+      ay = lerp(ay, ty, 0.18);
+      el.style.transform = `translate3d(${ax}px,${ay}px,0)`;
+      if (Math.abs(ax - tx) > 0.05 || Math.abs(ay - ty) > 0.05) {
+        raf = requestAnimationFrame(magLoop);
+      } else raf = 0;
+    }
+  });
+
+  /* ---------- Video ready + mobile autoplay fallback ---------- */
+  const allBgVideos = [marbleVideo, cloudsVideo];
+
+  function tryPlay(v) {
+    if (!v) return;
+    v.muted = true;
+    v.defaultMuted = true;
+    v.playsInline = true;
+    v.setAttribute('playsinline', '');
+    v.setAttribute('webkit-playsinline', 'true');
+    v.setAttribute('muted', '');
+    const promise = v.play();
+    if (promise && typeof promise.catch === 'function') {
+      promise.catch(() => { /* silent — reintento abajo */ });
+    }
+  }
+
+  allBgVideos.forEach(v => {
+    v.addEventListener('loadedmetadata', () => tryPlay(v));
+    v.addEventListener('canplay', () => tryPlay(v));
+    v.addEventListener('error', e => console.warn('video error:', v.src, e));
+    if (v.readyState >= 1) tryPlay(v);
+  });
+
+  // Reintento agresivo durante los primeros 5 segundos por si el navegador
+  // no respondí al primer play() (móvil con buffer lento, throttling, etc)
+  let retries = 0;
+  const retryInterval = setInterval(() => {
+    retries++;
+    let allPlaying = true;
+    allBgVideos.forEach(v => {
+      if (v.paused) {
+        tryPlay(v);
+        allPlaying = false;
+      }
+    });
+    if (allPlaying || retries > 25) clearInterval(retryInterval);
+  }, 200);
+
+  // Fallback con gesto de usuario (en caso de iframe restrictivo)
+  let primed = false;
+  function primeAllVideos() {
+    if (primed) return;
+    primed = true;
+    allBgVideos.forEach(tryPlay);
+  }
+  ['touchstart', 'touchend', 'click', 'scroll', 'wheel', 'keydown'].forEach(ev => {
+    window.addEventListener(ev, primeAllVideos, { once: true, passive: true });
+  });
+
+  // Reanudar tras background
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      allBgVideos.forEach(v => { if (v.paused) tryPlay(v); });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
