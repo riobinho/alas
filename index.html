@@ -137,7 +137,7 @@
   /* =========================================================
      SCENE
      ========================================================= */
-  .scene { position: relative; height: 480vh; }
+  .scene { position: relative; height: 660vh; }
   .stage {
     position: sticky;
     top: 0;
@@ -215,26 +215,6 @@
     z-index: 7;
     pointer-events: none;
     will-change: opacity;
-  }
-
-  /* Ghost del wordmark */
-  .ghost-wordmark {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 8;
-    font-family: var(--sans);
-    font-weight: 700;
-    font-size: clamp(120px, 22vw, 380px);
-    letter-spacing: -0.055em;
-    line-height: 0.85;
-    text-transform: lowercase;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(239,233,220,0.18);
-    pointer-events: none;
-    user-select: none;
-    will-change: opacity, transform;
-    mix-blend-mode: overlay;
   }
 
   /* =========================================================
@@ -520,7 +500,7 @@
      ========================================================= */
   /* ---------- TABLET ---------- */
   @media (max-width: 1024px) {
-    .scene { height: 460vh; }
+    .scene { height: 620vh; }
     .hero-final h1 { font-size: clamp(36px, 7vw, 72px); }
     .manifesto-line { font-size: clamp(42px, 8.5vw, 88px); }
   }
@@ -534,9 +514,6 @@
     .chrome { padding: 18px 20px; gap: 12px; }
     .wordmark { font-size: 20px; }
     .clock { font-size: 10px; letter-spacing: 0.1em; gap: 8px; }
-
-    /* Ghost wordmark más compacto */
-    .ghost-wordmark { font-size: clamp(80px, 26vw, 200px); }
 
     /* Manifesto: stack en vertical (2 líneas) */
     .manifesto-line {
@@ -578,7 +555,7 @@
     .actions-meta { font-size: 10px; letter-spacing: 0.04em; }
 
     /* Scroll */
-    .scene { height: 380vh; }
+    .scene { height: 520vh; }
     .scroll-hint { bottom: 24px; font-size: 9px; letter-spacing: 0.18em; }
     .scroll-hint .line { height: 24px; }
 
@@ -645,8 +622,6 @@
       <div class="grain" aria-hidden="true"></div>
 
       <!-- ============ Cutout phase ============ -->
-      <span class="ghost-wordmark" id="ghostWordmark" aria-hidden="true">alas</span>
-
       <svg class="cutout-svg" id="cutoutSvg" viewBox="0 0 1600 900"
         preserveAspectRatio="xMidYMid slice" aria-hidden="true">
         <defs>
@@ -667,8 +642,7 @@
           <span class="static">para los que</span>
           <span class="swap-wrap" id="swapWrap">
             <ul class="swap-list" id="swapList">
-              <li>firman.</li>
-              <li>componen.</li>
+              <li>crean.</li>
               <li>producen.</li>
               <li>distribuyen.</li>
               <li>suenan.</li>
@@ -684,11 +658,11 @@
           <span class="line-mask" data-line="de artistas y sellos."></span>
         </h1>
         <div class="actions">
-          <a class="pill pill-solid" href="mailto:hola@alaslegal.com?subject=Hola%20alas" data-hot data-magnetic>
-            escribir a hola@alaslegal.com
+          <a class="pill pill-solid" href="mailto:hola@alasservice.com?subject=Hola%20alas" data-hot data-magnetic>
+            escribir a hola@alasservice.com
             <span class="arrow" aria-hidden="true">→</span>
           </a>
-          <a class="pill pill-line" href="https://cal.com/alaslegal" target="_blank" rel="noopener" data-hot data-magnetic>
+          <a class="pill pill-line" href="https://cal.com/alasservice" target="_blank" rel="noopener" data-hot data-magnetic>
             agendar una llamada
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
@@ -709,7 +683,7 @@
   </div>
 
   <footer class="foot">
-    <span><a href="mailto:hola@alaslegal.com">hola@alaslegal.com</a></span>
+    <span><a href="mailto:hola@alasservice.com">hola@alasservice.com</a></span>
     <span class="center">aviso legal · privacidad</span>
     <span class="right">© alas® 2026 · todos los derechos reservados</span>
   </footer>
@@ -754,9 +728,9 @@
 
   /* ---------- Marquee ---------- */
   const items = [
-    '<a href="mailto:hola@alaslegal.com">hola@alaslegal.com</a>',
+    '<a href="mailto:hola@alasservice.com">hola@alasservice.com</a>',
     'contratos · royalties · derechos',
-    '<a href="https://cal.com/alaslegal">cal.com/alaslegal</a>',
+    '<a href="https://cal.com/alasservice">cal.com/alasservice</a>',
     'asesoría legal de artistas y sellos',
     'defensa · advisory · publishing',
     'alas® 2026',
@@ -768,7 +742,6 @@
   const scene       = $('scene');
   const maskText    = $('maskText');
   const cutoutSvg   = $('cutoutSvg');
-  const ghost       = $('ghostWordmark');
   const marbleVideo = $('marbleVideo');
   const cloudsVideo = $('cloudsVideo');
   const manifesto   = $('manifesto');
@@ -858,10 +831,6 @@
 
     const maskOp = 1 - smoothstep(PHASES.cutoutEnd - 0.04, PHASES.cutoutEnd + 0.02, p);
     cutoutSvg.style.opacity = maskOp.toFixed(3);
-
-    /* === 2. Ghost wordmark === */
-    const ghostP = smoothstep(0.04, 0.2, p) * (1 - smoothstep(PHASES.cutoutEnd - 0.08, PHASES.cutoutEnd, p));
-    ghost.style.opacity = (ghostP * 0.9).toFixed(3);
 
     /* === 3. Crossfade mármol → nubes (transición al hero) === */
     const trans = smoothstep(PHASES.transitionIn, PHASES.transitionEnd, p);
