@@ -789,6 +789,15 @@
   @media (pointer: coarse) {
     .modal-x, .opt-card, .lf-submit, .pill-ghost, .lf-body input, .lf-body textarea { cursor: auto; }
   }
+
+  /* transición entre páginas (coherente con /servicios) */
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition { navigation: auto; }
+    ::view-transition-old(root) { animation: vt-out .38s cubic-bezier(.22,.65,.12,1) both; }
+    ::view-transition-new(root) { animation: vt-in  .5s  cubic-bezier(.22,.65,.12,1) both; }
+    @keyframes vt-out { to   { opacity: 0; } }
+    @keyframes vt-in  { from { opacity: 0; transform: translateY(16px); } }
+  }
 </style>
 </head>
 <body>

@@ -131,15 +131,62 @@
   @media (prefers-reduced-motion:reduce){
     .hero, .svc, .hero h1 .w{ opacity:1 !important; transform:none !important; }
   }
+
+  /* ===================== cursor personalizado ===================== */
+  @media (pointer:fine){
+    body,a,button,.svc{cursor:none}
+    .cursor,.cursor-ring{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;border-radius:50%;mix-blend-mode:difference;will-change:transform}
+    .cursor{width:6px;height:6px;background:#efe9dc}
+    .cursor-ring{width:36px;height:36px;border:1px solid rgba(239,233,220,.55);transition:width .25s var(--ease),height .25s var(--ease),border-color .25s var(--ease)}
+    .cursor-ring.is-hot{width:74px;height:74px;border-color:rgba(239,233,220,.95)}
+  }
+  @media (pointer:coarse){ .cursor,.cursor-ring{display:none} }
+
+  /* ===================== grano + profundidad del hero ===================== */
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:3;mix-blend-mode:overlay;opacity:.5;
+    background-image:radial-gradient(rgba(239,233,220,.05) .5px,transparent .5px),radial-gradient(rgba(0,0,0,.18) .5px,transparent .5px);
+    background-size:3px 3px,5px 5px;background-position:0 0,1px 2px}
+  .hero{position:relative;overflow:hidden}
+  .hero>*{position:relative;z-index:1}
+  .hero-glyph{position:absolute;right:-2%;top:48%;transform:translateY(-50%);z-index:0;pointer-events:none;user-select:none;
+    font-family:var(--sans);font-weight:500;font-size:min(72vh,680px);line-height:.7;letter-spacing:-.04em;
+    color:var(--paper);opacity:.035;text-transform:lowercase;will-change:transform}
+
+  /* ===================== filas de servicios interactivas ===================== */
+  .svcs{counter-reset:svc}
+  .svc{position:relative;counter-increment:svc;overflow:hidden;transition:background .25s var(--ease),opacity .45s var(--ease)}
+  .svc>*{position:relative;z-index:1}
+  .svc::after{content:counter(svc,decimal-leading-zero);position:absolute;right:clamp(10px,3vw,44px);top:50%;
+    transform:translateY(-50%) scale(.86);z-index:0;pointer-events:none;
+    font-family:var(--sans);font-weight:500;font-size:clamp(80px,12vw,150px);letter-spacing:-.04em;line-height:1;
+    color:var(--paper);opacity:0;transition:opacity .5s var(--ease),transform .6s var(--ease)}
+  .svc:hover::after{opacity:.05;transform:translateY(-50%) scale(1)}
+  .svcs:has(.svc:hover) .svc:not(:hover){opacity:.3}
+  .svc h2{transition:transform .45s var(--ease)}
+  .svc:hover h2{transform:translateX(14px)}
+  .svc .num{transition:color .3s}
+  .svc:hover .num{color:var(--accent)}
+
+  /* ===================== transición entre páginas ===================== */
+  @media (prefers-reduced-motion:no-preference){
+    @view-transition{ navigation:auto }
+    ::view-transition-old(root){ animation:vt-out .38s var(--ease) both }
+    ::view-transition-new(root){ animation:vt-in .5s var(--ease) both }
+    @keyframes vt-out{ to{ opacity:0 } }
+    @keyframes vt-in{ from{ opacity:0; transform:translateY(16px) } }
+  }
 </style>
 </head>
 <body>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
   <header class="chrome">
-    <a href="/" class="wordmark">alas</a>
+    <a href="/" class="wordmark" data-hot data-magnetic>alas</a>
     <div class="chrome-right">
       <nav class="chrome-nav">
-        <a href="/servicios" aria-current="page">servicios</a>
-        <a href="mailto:info@alasservice.com">contacto</a>
+        <a href="/servicios" aria-current="page" data-hot>servicios</a>
+        <a href="mailto:info@alasservice.com" data-hot>contacto</a>
       </nav>
       <span class="clock">cet · <span class="live" id="clock">--:--:--</span></span>
     </div>
@@ -147,6 +194,7 @@
 
   <main class="wrap">
     <section class="hero">
+      <div class="hero-glyph" aria-hidden="true">a</div>
       <span class="kicker">servicios</span>
       <h1><span class="w" style="--i:0">todo</span> <span class="w" style="--i:1">lo</span> <span class="w" style="--i:2">que</span> <span class="w" style="--i:3">tu</span><br><span class="w" style="--i:4">música</span> <span class="w" style="--i:5">necesita.</span></h1>
       <p class="lead">Legal, management, booking, fiscalidad, derechos y desarrollo de carrera. Acompañamos cada etapa de artistas, productores y sellos —para que tú solo tengas que crear.</p>
@@ -169,8 +217,8 @@
   </main>
 
   <footer class="foot">
-    <span><a href="mailto:info@alasservice.com">info@alasservice.com</a><a class="ig" href="https://www.instagram.com/alas.service/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></a></span>
-    <span class="center"><a href="servicios">servicios</a> · aviso legal · privacidad</span>
+    <span><a href="mailto:info@alasservice.com" data-hot>info@alasservice.com</a><a class="ig" href="https://www.instagram.com/alas.service/" target="_blank" rel="noopener" aria-label="Instagram" data-hot><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg></a></span>
+    <span class="center"><a href="servicios" data-hot>servicios</a> · aviso legal · privacidad</span>
     <span class="right">© alas® 2026 · todos los derechos reservados</span>
   </footer>
 
@@ -211,6 +259,54 @@
     const fmt = new Intl.DateTimeFormat('es-ES', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Europe/Madrid' });
     const tick = () => { el.textContent = fmt.format(new Date()); };
     tick(); setInterval(tick, 1000);
+  })();
+
+  /* cursor personalizado + botones magnéticos — solo con puntero fino (desktop) */
+  (() => {
+    if (!window.matchMedia || !matchMedia('(pointer:fine)').matches) return;
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursorRing');
+    if (!cursor || !ring) return;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    let cx = innerWidth / 2, cy = innerHeight / 2, rx = cx, ry = cy;
+    addEventListener('mousemove', e => {
+      cx = e.clientX; cy = e.clientY;
+      cursor.style.transform = `translate3d(${cx}px,${cy}px,0) translate(-50%,-50%)`;
+    }, { passive: true });
+    (function loop() {
+      rx = lerp(rx, cx, 0.18); ry = lerp(ry, cy, 0.18);
+      ring.style.transform = `translate3d(${rx}px,${ry}px,0) translate(-50%,-50%)`;
+      requestAnimationFrame(loop);
+    })();
+    document.querySelectorAll('[data-hot]').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('is-hot'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('is-hot'));
+    });
+    document.querySelectorAll('[data-magnetic]').forEach(el => {
+      let raf = 0, tx = 0, ty = 0, ax = 0, ay = 0;
+      const mag = () => {
+        ax = lerp(ax, tx, 0.18); ay = lerp(ay, ty, 0.18);
+        el.style.transform = `translate3d(${ax}px,${ay}px,0)`;
+        if (Math.abs(ax - tx) > 0.05 || Math.abs(ay - ty) > 0.05) raf = requestAnimationFrame(mag);
+        else raf = 0;
+      };
+      el.addEventListener('mousemove', e => {
+        const r = el.getBoundingClientRect();
+        tx = (e.clientX - r.left - r.width / 2) * 0.22;
+        ty = (e.clientY - r.top  - r.height / 2) * 0.22;
+        if (!raf) raf = requestAnimationFrame(mag);
+      });
+      el.addEventListener('mouseleave', () => { tx = 0; ty = 0; if (!raf) raf = requestAnimationFrame(mag); });
+    });
+  })();
+
+  /* parallax sutil del glifo gigante del hero */
+  (() => {
+    const glyph = document.querySelector('.hero-glyph');
+    if (!glyph || (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches)) return;
+    let raf = 0;
+    const onScroll = () => { raf = 0; glyph.style.transform = `translateY(calc(-50% + ${scrollY * 0.12}px))`; };
+    addEventListener('scroll', () => { if (!raf) raf = requestAnimationFrame(onScroll); }, { passive: true });
   })();
   </script>
 </body>
