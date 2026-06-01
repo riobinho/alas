@@ -31,7 +31,7 @@
 
 <style>
   :root{
-    --ink:#1a1410; --ink-soft:#251c16; --ink-deep:#100b08;
+    --ink:#2b1e15; --ink-soft:#352619; --ink-deep:#160f0a;
     --paper:#efe9dc; --paper-dim:rgba(239,233,220,.6); --paper-quiet:rgba(239,233,220,.32);
     --rule:rgba(239,233,220,.13); --accent:#d4c089;
     --sans:'Geist','Inter','Helvetica Neue',sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
@@ -47,7 +47,7 @@
   /* header — idéntico a la home (chrome) */
   .chrome{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;
           padding:24px clamp(24px,4vw,56px);
-          background:linear-gradient(var(--ink),rgba(26,20,16,.78) 62%,transparent);
+          background:linear-gradient(var(--ink),rgba(43,30,21,.78) 62%,transparent);
           -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
   .wordmark{font-family:var(--sans);font-weight:500;font-size:22px;letter-spacing:-.045em;text-transform:lowercase;color:var(--paper);text-decoration:none;line-height:1}
   .wordmark::after{content:"®";font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:0;vertical-align:top;margin-left:2px;color:var(--paper-dim);text-transform:none}
@@ -143,14 +143,14 @@
   @media (pointer:coarse){ .cursor,.cursor-ring{display:none} }
 
   /* ===================== grano + profundidad del hero ===================== */
-  .grain{position:fixed;inset:0;pointer-events:none;z-index:3;mix-blend-mode:overlay;opacity:.5;
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:3;mix-blend-mode:overlay;opacity:.4;
     background-image:radial-gradient(rgba(239,233,220,.05) .5px,transparent .5px),radial-gradient(rgba(0,0,0,.18) .5px,transparent .5px);
     background-size:3px 3px,5px 5px;background-position:0 0,1px 2px}
   .hero{position:relative;overflow:hidden}
   .hero>*{position:relative;z-index:1}
   .hero-glyph{position:absolute;right:-2%;top:48%;transform:translateY(-50%);z-index:0;pointer-events:none;user-select:none;
     font-family:var(--sans);font-weight:500;font-size:min(72vh,680px);line-height:.7;letter-spacing:-.04em;
-    color:var(--paper);opacity:.035;text-transform:lowercase;will-change:transform}
+    color:var(--paper);opacity:.09;text-transform:lowercase;will-change:transform}
 
   /* ===================== filas de servicios interactivas ===================== */
   .svcs{counter-reset:svc}
