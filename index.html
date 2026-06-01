@@ -504,7 +504,7 @@
     align-items: center;
     gap: 56px;
     padding: 22px 0;
-    animation: marquee 42s linear infinite;
+    animation: marquee 70s linear infinite;
     font-family: var(--sans);
     font-size: 22px;
     font-weight: 500;
@@ -864,7 +864,7 @@
 
   <footer class="foot">
     <span><a href="mailto:info@alasservice.com">info@alasservice.com</a></span>
-    <span class="center">aviso legal · privacidad</span>
+    <span class="center"><a href="servicios">servicios</a> · aviso legal · privacidad</span>
     <span class="right">© alas® 2026 · todos los derechos reservados</span>
   </footer>
 
@@ -974,12 +974,18 @@
 
   /* ---------- Marquee ---------- */
   const items = [
-    '<a href="mailto:info@alasservice.com">info@alasservice.com</a>',
-    'contratos · royalties · derechos',
-    '<a href="https://cal.com/alasservice">cal.com/alasservice</a>',
-    'asesoría legal de artistas y sellos',
-    'defensa · advisory · publishing',
-    'alas® 2026',
+    'management & strategy',
+    'booking & live',
+    'legal affairs',
+    'music business consulting',
+    'fiscal & accounting',
+    'rights management',
+    'label services',
+    'brand partnerships',
+    'social media & creative direction',
+    'funding & grants',
+    'international expansion',
+    'artist incubator',
   ];
   const cell = items.map(t => `<span>${t}</span><span class="dot"></span>`).join('');
   $('marqueeTrack').innerHTML = `<span>${cell}</span><span>${cell}</span>`;
@@ -1243,6 +1249,10 @@
       root.classList.remove('modal-open');
       setTimeout(() => form.classList.remove('sent'), 250);
     });
+
+    // abrir automáticamente si se llega con #agendar (p. ej. desde /servicios)
+    if (location.hash === '#agendar') open();
+    window.addEventListener('hashchange', () => { if (location.hash === '#agendar') open(); });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();

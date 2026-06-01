@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>servicios — alas · asesoría legal y management para la industria musical</title>
+<meta name="description" content="Servicios de alas: legal affairs, management, booking, fiscal, rights management, label services, brand partnerships y más para artistas, productores y sellos." />
+
+<link rel="icon" href="favicon.ico" sizes="any" />
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<meta name="theme-color" content="#1a1410" />
+
+<link rel="canonical" href="https://alasservice.com/servicios" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="alas" />
+<meta property="og:locale" content="es_ES" />
+<meta property="og:title" content="servicios — alas" />
+<meta property="og:description" content="Legal, management, booking, fiscal, derechos y desarrollo de carrera para artistas, productores y sellos." />
+<meta property="og:url" content="https://alasservice.com/servicios" />
+<meta property="og:image" content="https://alasservice.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://alasservice.com/og-image.png" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --ink:#1a1410; --ink-soft:#251c16; --ink-deep:#100b08;
+    --paper:#efe9dc; --paper-dim:rgba(239,233,220,.6); --paper-quiet:rgba(239,233,220,.32);
+    --rule:rgba(239,233,220,.13); --accent:#d4c089;
+    --sans:'Geist','Inter','Helvetica Neue',sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
+    --ease:cubic-bezier(.22,.65,.12,1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink-deep);color:var(--paper);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","cv11";overflow-x:hidden}
+  a{color:inherit}
+  ::selection{background:var(--accent);color:var(--ink)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(22px,4vw,60px)}
+
+  /* header */
+  .top{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+       padding:20px clamp(22px,4vw,60px);background:linear-gradient(var(--ink-deep),rgba(16,11,8,.72) 65%,transparent);
+       -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+  .wm{font-weight:500;font-size:23px;letter-spacing:-.045em;text-transform:lowercase;text-decoration:none;color:var(--paper);line-height:1}
+  .wm sup{font-family:var(--mono);font-weight:400;font-size:9px;vertical-align:top;margin-left:2px;color:var(--paper-dim)}
+  .top nav{display:flex;gap:clamp(16px,3vw,30px);font-size:14px;font-weight:500}
+  .top nav a{text-decoration:none;color:var(--paper-dim);transition:color .2s}
+  .top nav a:hover,.top nav a[aria-current]{color:var(--paper)}
+
+  /* hero */
+  .hero{padding:clamp(64px,13vh,150px) 0 clamp(34px,6vh,64px)}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent)}
+  .hero h1{font-size:clamp(46px,9vw,108px);font-weight:800;letter-spacing:-.042em;line-height:.96;margin:20px 0 0;text-transform:lowercase}
+  .hero .lead{font-size:clamp(16px,2.1vw,21px);color:var(--paper-dim);max-width:640px;margin-top:28px;line-height:1.5}
+
+  /* lista de servicios */
+  .svcs{border-top:1px solid var(--rule)}
+  .svc{display:grid;grid-template-columns:54px minmax(200px,1.05fr) 1.25fr;gap:clamp(14px,3vw,48px);
+       padding:clamp(26px,3.6vw,42px) 0;border-bottom:1px solid var(--rule);align-items:start;
+       transition:background .25s var(--ease)}
+  .svc:hover{background:linear-gradient(90deg,rgba(239,233,220,.035),transparent 70%)}
+  .svc .num{font-family:var(--mono);font-size:13px;color:var(--paper-quiet);padding-top:9px;letter-spacing:.04em}
+  .svc h2{font-size:clamp(22px,3.1vw,33px);font-weight:700;letter-spacing:-.022em;text-transform:lowercase;line-height:1.04}
+  .svc p{color:var(--paper-dim);font-size:clamp(14px,1.55vw,16px);line-height:1.55;padding-top:5px}
+  .svc .tag{display:inline-block;margin-top:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+            text-transform:uppercase;color:var(--accent);border:1px solid rgba(212,192,137,.4);border-radius:999px;padding:4px 10px}
+
+  /* CTA */
+  .cta{padding:clamp(80px,14vh,150px) 0 clamp(60px,9vh,100px);text-align:center}
+  .cta h2{font-size:clamp(34px,6.5vw,76px);font-weight:800;letter-spacing:-.035em;text-transform:lowercase;line-height:.98}
+  .cta p{color:var(--paper-dim);margin:22px auto 0;max-width:460px;font-size:clamp(15px,1.8vw,18px)}
+  .actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin-top:38px}
+  .pill{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;padding:15px 28px;border-radius:999px;
+        text-decoration:none;border:1px solid var(--paper);transition:background .25s,color .25s}
+  .pill .arrow{transition:transform .25s}
+  .pill:hover .arrow{transform:translate(3px,-3px)}
+  .pill-solid{background:var(--paper);color:var(--ink)}
+  .pill-solid:hover{background:transparent;color:var(--paper)}
+  .pill-solid:hover .arrow{transform:translateX(3px)}
+  .pill-line{color:var(--paper);background:transparent}
+  .pill-line:hover{background:var(--paper);color:var(--ink)}
+
+  /* footer */
+  .foot{border-top:1px solid var(--rule);padding:30px 0 40px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
+        font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--paper-dim)}
+  .foot a{text-decoration:none;color:var(--paper-dim);transition:color .2s}
+  .foot a:hover{color:var(--paper)}
+
+  @media (max-width:720px){
+    .svc{grid-template-columns:1fr;gap:8px;padding:26px 0}
+    .svc .num{padding-top:0}
+    .svc p{padding-top:2px}
+    .top nav a.hide-sm{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+  <header class="top">
+    <a class="wm" href="/">alas<sup>®</sup></a>
+    <nav>
+      <a href="/" class="hide-sm">inicio</a>
+      <a href="/servicios" aria-current="page">servicios</a>
+      <a href="mailto:info@alasservice.com">contacto</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <span class="kicker">servicios</span>
+      <h1>todo lo que tu<br>música necesita.</h1>
+      <p class="lead">Legal, management, booking, fiscalidad, derechos y desarrollo de carrera. Acompañamos cada etapa de artistas, productores y sellos —para que tú solo tengas que crear.</p>
+    </section>
+
+    <section class="svcs" aria-label="Listado de servicios">
+      <article class="svc"><span class="num">01</span><h2>management &amp; strategy</h2><p>Acompañamiento estratégico para artistas, productores y proyectos musicales en todas las etapas de desarrollo.</p></article>
+      <article class="svc"><span class="num">02</span><h2>booking &amp; live</h2><p>Negociación, contratación y coordinación de actuaciones, festivales, salas y eventos.</p></article>
+      <article class="svc"><span class="num">03</span><h2>legal affairs</h2><p>Redacción, revisión y negociación de contratos discográficos, editoriales, de management, distribución, sincronización y actuaciones.</p></article>
+      <article class="svc"><span class="num">04</span><h2>music business consulting</h2><p>Asesoramiento sobre modelos de negocio, monetización, derechos, estructuras societarias y oportunidades de crecimiento dentro de la industria musical.</p></article>
+      <article class="svc"><span class="num">05</span><h2>fiscal &amp; accounting</h2><p>Planificación fiscal para artistas, productores y profesionales del sector: altas, obligaciones tributarias, facturación y optimización de proyectos musicales.</p></article>
+      <article class="svc"><span class="num">06</span><h2>rights management</h2><p>Gestión y supervisión de derechos de autor, derechos conexos, registros de obras, reparto de royalties y relaciones con entidades de gestión.</p></article>
+      <article class="svc"><span class="num">07</span><h2>label services</h2><p>Asistencia en lanzamientos independientes: distribución digital, metadata, ISRC, créditos, estrategia de publicación y coordinación con plataformas.</p></article>
+      <article class="svc"><span class="num">08</span><h2>brand partnerships</h2><p>Negociación y estructuración de colaboraciones con marcas, patrocinios, embajadores de marca y campañas comerciales.</p></article>
+      <article class="svc"><span class="num">09</span><h2>social media &amp; creative direction</h2><p>Curación de contenido, posicionamiento digital, supervisión de la imagen de marca y coherencia narrativa del proyecto artístico.</p></article>
+      <article class="svc"><span class="num">10</span><h2>funding &amp; grants</h2><p>Búsqueda y gestión de subvenciones, ayudas públicas, patrocinadores y vías de financiación para proyectos culturales y musicales.</p></article>
+      <article class="svc"><span class="num">11</span><h2>international expansion</h2><p>Asesoramiento para actuaciones, contratos y desarrollo de carrera en mercados internacionales.</p></article>
+      <article class="svc"><span class="num">12</span><h2>artist incubator</h2><p>Programa de asesoramiento para artistas emergentes con potencial de desarrollo profesional.<br><span class="tag">gratuito o de coste reducido</span></p></article>
+    </section>
+
+    <section class="cta">
+      <h2>¿lo tuyo encaja aquí?</h2>
+      <p>Cuéntanos tu proyecto y vemos juntos cómo darle forma.</p>
+      <div class="actions">
+        <a class="pill pill-solid" href="/#agendar">agendar una llamada <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="pill pill-line" href="mailto:info@alasservice.com?subject=Hola%20alas">escribir a info@alasservice.com <span class="arrow" aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot">
+    <span><a href="mailto:info@alasservice.com">info@alasservice.com</a></span>
+    <span><a href="/">inicio</a> · aviso legal · privacidad</span>
+    <span>© alas® 2026</span>
+  </footer>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LegalService",
+    "name": "alas",
+    "url": "https://alasservice.com/",
+    "email": "info@alasservice.com",
+    "image": "https://alasservice.com/og-image.png",
+    "areaServed": { "@type": "Country", "name": "España" },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Servicios",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Management & Strategy" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Booking & Live" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Legal Affairs" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Music Business Consulting" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Fiscal & Accounting" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Rights Management" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Label Services" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Brand Partnerships" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Social Media & Creative Direction" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Funding & Grants" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "International Expansion" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Artist Incubator" } }
+      ]
+    }
+  }
+  </script>
+</body>
+</html>
