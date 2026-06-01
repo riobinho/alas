@@ -39,7 +39,7 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--ink-deep);color:var(--paper);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","ss03","cv11";overflow-x:hidden}
+  body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","ss03","cv11";overflow-x:hidden}
   a{color:inherit}
   ::selection{background:var(--accent);color:var(--ink)}
   .wrap{padding:0 clamp(24px,4vw,56px)}
@@ -47,7 +47,7 @@
   /* header — idéntico a la home (chrome) */
   .chrome{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;
           padding:24px clamp(24px,4vw,56px);
-          background:linear-gradient(var(--ink-deep),rgba(16,11,8,.72) 62%,transparent);
+          background:linear-gradient(var(--ink),rgba(26,20,16,.78) 62%,transparent);
           -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
   .wordmark{font-family:var(--sans);font-weight:500;font-size:22px;letter-spacing:-.045em;text-transform:lowercase;color:var(--paper);text-decoration:none;line-height:1}
   .wordmark::after{content:"®";font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:0;vertical-align:top;margin-left:2px;color:var(--paper-dim);text-transform:none}
@@ -95,7 +95,7 @@
   .pill-line:hover{background:var(--paper);color:var(--ink)}
 
   /* footer — idéntico a la home */
-  .foot{position:relative;z-index:10;background:var(--ink);color:var(--paper-dim);
+  .foot{position:relative;z-index:10;background:var(--ink);border-top:1px solid var(--rule);color:var(--paper-dim);
         padding:28px clamp(24px,4vw,56px) 32px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;
         font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
   .foot .center{text-align:center}
