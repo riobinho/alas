@@ -31,7 +31,7 @@
 
 <style>
   :root{
-    --ink:#2b1e15; --ink-soft:#352619; --ink-deep:#160f0a;
+    --ink:#1a1410; --ink-soft:#251c16; --ink-deep:#100b08;
     --paper:#efe9dc; --paper-dim:rgba(239,233,220,.6); --paper-quiet:rgba(239,233,220,.32);
     --rule:rgba(239,233,220,.13); --accent:#d4c089;
     --sans:'Geist','Inter','Helvetica Neue',sans-serif; --mono:'Geist Mono',ui-monospace,monospace;
@@ -39,7 +39,9 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{background:var(--ink);color:var(--paper);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","ss03","cv11";overflow-x:hidden}
+  body{background:var(--ink-deep);color:var(--paper);font-family:var(--sans);font-weight:400;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-feature-settings:"ss01","ss03","cv11";overflow-x:hidden}
+  /* fondo cálido fijo, idéntico al stage de la home (gradiente radial detrás del contenido) */
+  body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(120% 80% at 50% 50%,#2d2419 0%,#1a1410 60%,#100b08 100%)}
   a{color:inherit}
   ::selection{background:var(--accent);color:var(--ink)}
   .wrap{padding:0 clamp(24px,4vw,56px)}
@@ -47,7 +49,7 @@
   /* header — idéntico a la home (chrome) */
   .chrome{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;
           padding:24px clamp(24px,4vw,56px);
-          background:linear-gradient(var(--ink),rgba(43,30,21,.78) 62%,transparent);
+          background:linear-gradient(var(--ink),rgba(26,20,16,.78) 62%,transparent);
           -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
   .wordmark{font-family:var(--sans);font-weight:500;font-size:22px;letter-spacing:-.045em;text-transform:lowercase;color:var(--paper);text-decoration:none;line-height:1}
   .wordmark::after{content:"®";font-family:var(--mono);font-weight:400;font-size:9px;letter-spacing:0;vertical-align:top;margin-left:2px;color:var(--paper-dim);text-transform:none}
@@ -91,9 +93,7 @@
   .foot .ig svg{width:15px;height:15px;display:block}
 
   @media (max-width:720px){
-    /* en movil: fondo de la home (mas rico en pantallas OLED) y sin glifo gigante */
-    :root{ --ink:#100b08 }
-    .chrome{ background:linear-gradient(var(--ink),rgba(16,11,8,.78) 62%,transparent) }
+    /* en movil el glifo gigante no encaja: se oculta */
     .hero-glyph{ display:none }
     .svc{grid-template-columns:1fr;gap:8px;padding:26px 0}
     .svc .num{padding-top:0}
