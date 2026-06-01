@@ -138,6 +138,14 @@
     transition: opacity 700ms var(--ease-soft), transform 700ms var(--ease-out);
   }
   .chrome.is-on { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .chrome-right { display: flex; align-items: center; gap: clamp(18px, 3vw, 34px); }
+  .chrome-nav { display: flex; gap: clamp(16px, 2.4vw, 26px); }
+  .chrome-nav a {
+    font-family: var(--sans); font-weight: 500; font-size: 15px;
+    letter-spacing: -0.01em; text-transform: lowercase; color: var(--paper);
+    text-decoration: none; mix-blend-mode: difference; transition: opacity .2s;
+  }
+  .chrome-nav a:hover { opacity: 0.55; }
 
   .wordmark {
     font-family: var(--sans);
@@ -566,6 +574,8 @@
     .chrome { padding: 18px 20px; gap: 12px; }
     .wordmark { font-size: 20px; }
     .clock { font-size: 10px; letter-spacing: 0.1em; gap: 8px; }
+    .chrome-nav a { font-size: 13px; }
+    .chrome-nav, .chrome-right { gap: 16px; }
 
     /* Manifesto: stack en vertical (2 líneas) */
     .manifesto-line {
@@ -785,7 +795,13 @@
 
   <header class="chrome" id="chrome">
     <a href="/" class="wordmark" data-hot>alas</a>
-    <span class="clock">cet · <span class="live" id="clock">--:--:--</span></span>
+    <div class="chrome-right">
+      <nav class="chrome-nav">
+        <a href="/servicios" data-hot>servicios</a>
+        <a href="mailto:info@alasservice.com" data-hot>contacto</a>
+      </nav>
+      <span class="clock">cet · <span class="live" id="clock">--:--:--</span></span>
+    </div>
   </header>
 
   <section class="scene" id="scene">
