@@ -39,7 +39,7 @@ Vercel servirá `index.html` en la raíz directamente.
 
 ## Edición rápida
 
-- **Email** y **link de calendario**: busca `hola@alasservice.com` y `cal.com/alasservice` en `index.html` y reemplaza.
+- **Email** y **link de calendario**: busca `info@alasservice.com` y `cal.com/alasservice` en `index.html` y reemplaza.
 - **Vídeos**: sustituye `hero.mp4` y `clouds.mp4` por archivos del mismo nombre (recomendado <2 MB cada uno, codec H.264, sin audio).
 - **Copy del manifiesto** (`para los que crean / producen / …`): busca `swap-list` en `index.html`.
 - **Copy del hero final** (`Asesoría legal de artistas y sellos`): busca `data-line=` en `index.html`.
