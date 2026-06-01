@@ -137,7 +137,7 @@
   /* =========================================================
      SCENE
      ========================================================= */
-  .scene { position: relative; height: 660vh; }
+  .scene { position: relative; height: 700vh; }
   .stage {
     position: sticky;
     top: 0;
@@ -351,7 +351,7 @@
   .hero-final h1 .char {
     display: inline-block;
     transform: translateY(110%);
-    transition: transform 850ms var(--ease-out);
+    transition: transform 650ms var(--ease-out);
     will-change: transform;
   }
   .hero-final h1 .char.space {
@@ -367,7 +367,7 @@
     gap: 12px;
     opacity: 0;
     transform: translateY(20px);
-    transition: opacity 700ms ease 700ms, transform 700ms var(--ease-out) 700ms;
+    transition: opacity 600ms ease 450ms, transform 600ms var(--ease-out) 450ms;
   }
   .hero-final.is-on .actions { opacity: 1; transform: translateY(0); }
 
@@ -500,7 +500,7 @@
      ========================================================= */
   /* ---------- TABLET ---------- */
   @media (max-width: 1024px) {
-    .scene { height: 620vh; }
+    .scene { height: 660vh; }
     .hero-final h1 { font-size: clamp(36px, 7vw, 72px); }
     .manifesto-line { font-size: clamp(42px, 8.5vw, 88px); }
   }
@@ -555,7 +555,7 @@
     .actions-meta { font-size: 10px; letter-spacing: 0.04em; }
 
     /* Scroll */
-    .scene { height: 520vh; }
+    .scene { height: 560vh; }
     .scroll-hint { bottom: 24px; font-size: 9px; letter-spacing: 0.18em; }
     .scroll-hint .line { height: 24px; }
 
@@ -710,7 +710,7 @@
       const span = document.createElement('span');
       span.className = 'char' + (ch === ' ' ? ' space' : '');
       span.textContent = ch === ' ' ? '\u00A0' : ch;
-      span.style.transitionDelay = (i * 22) + 'ms';
+      span.style.transitionDelay = (i * 15) + 'ms';
       el.appendChild(span);
     });
   });
@@ -753,14 +753,14 @@
 
   /* ---------- Phase boundaries ---------- */
   const PHASES = {
-    cutoutEnd:    0.30,
-    manifestoIn:  0.34,
-    manifestoOut: 0.60,
-    transitionIn: 0.58,   // mármol → alas (fondo final)
-    transitionEnd:0.74,
-    heroStart:    0.72,
-    heroEnd:      0.92,
-    chromeIn:     0.92,
+    cutoutEnd:    0.25,
+    manifestoIn:  0.28,
+    manifestoOut: 0.75,   // ← fin de la rotación de palabras (siguen lentas)
+    transitionIn: 0.70,   // mármol → nubes (fondo final)
+    transitionEnd:0.80,
+    heroStart:    0.75,   // hero arranca justo cuando se va el manifiesto
+    heroEnd:      0.90,
+    chromeIn:     0.90,
   };
 
   const FS_START = 460;
@@ -839,11 +839,11 @@
 
     /* === 4. Manifesto fade in/out === */
     const manIn  = smoothstep(PHASES.manifestoIn,  PHASES.manifestoIn + 0.06,  p);
-    const manOut = 1 - smoothstep(PHASES.manifestoOut, PHASES.manifestoOut + 0.06, p);
+    const manOut = 1 - smoothstep(PHASES.manifestoOut, PHASES.manifestoOut + 0.03, p);
     const manOp = Math.min(manIn, manOut);
     manifesto.style.opacity = manOp.toFixed(3);
 
-    /* swap-list translateY: cicla 5 palabras durante el manifesto */
+    /* swap-list translateY: cicla las palabras durante el manifesto */
     const manP = clamp((p - PHASES.manifestoIn) / (PHASES.manifestoOut - PHASES.manifestoIn), 0, 1);
     const idx  = clamp(Math.floor(manP * (SWAP_COUNT)), 0, SWAP_COUNT - 1);
     const h    = getSwapItemHeight() || 0;
@@ -852,7 +852,7 @@
     /* === 6. Hero final reveal === */
     const heroIn = smoothstep(PHASES.heroStart, PHASES.heroEnd, p);
     heroFinal.style.opacity = heroIn.toFixed(3);
-    heroFinal.classList.toggle('is-on', heroIn > 0.4);
+    heroFinal.classList.toggle('is-on', heroIn > 0.2);
 
     /* === 7. Scroll hint fade === */
     scrollHint.style.opacity = (1 - smoothstep(0, 0.06, p)).toFixed(3);
