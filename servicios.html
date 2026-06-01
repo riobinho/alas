@@ -103,8 +103,10 @@
     .chrome-nav a{font-size:13px}
     .chrome-nav,.chrome-right{gap:16px}
     .clock{font-size:10px;letter-spacing:.1em;gap:8px}
-    .foot{grid-template-columns:1fr;gap:12px}
+    .foot{grid-template-columns:1fr;gap:16px;padding:32px 24px 38px;font-size:10.5px;letter-spacing:.07em;line-height:1.55}
+    .foot>*{min-width:0}
     .foot .center,.foot .right{text-align:left}
+    .foot .right{color:var(--paper-quiet)}
   }
   @media (max-width:380px){ .clock{display:none} }
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
