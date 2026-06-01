@@ -601,6 +601,124 @@
     .hero-final h1 .char { transform: translateY(0); }
     .hero-final, .actions, .actions-meta, .chrome, .manifesto { opacity: 1 !important; transform: none !important; }
   }
+  /* =========================================================
+     MODAL — agendar una llamada
+     ========================================================= */
+  button.pill { appearance: none; font-family: var(--sans); }
+
+  .modal {
+    border: none; padding: 0; background: transparent; color: var(--ink);
+    width: min(92vw, 560px); max-height: 92dvh; overflow: visible;
+  }
+  .modal::backdrop {
+    background: rgba(16, 11, 8, .55);
+    -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .modal[open]::backdrop { opacity: 1; }
+  .modal[open] { animation: modalIn .42s var(--ease-out); }
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(14px) scale(.985); }
+    to   { opacity: 1; transform: none; }
+  }
+  .modal-card {
+    position: relative; background: var(--paper);
+    border-radius: 20px; padding: clamp(26px, 4vw, 42px);
+    box-shadow: 0 40px 90px -25px rgba(0, 0, 0, .65);
+    max-height: 92dvh; overflow-y: auto;
+  }
+  .modal-x {
+    position: absolute; top: 16px; right: 16px;
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 1px solid rgba(26, 20, 16, .16); background: transparent;
+    color: var(--ink); font-size: 14px; line-height: 1;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .2s, color .2s;
+  }
+  .modal-x:hover { background: var(--ink); color: var(--paper); }
+  .modal-kicker {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .18em;
+    text-transform: uppercase; color: rgba(26, 20, 16, .5);
+  }
+  .modal-head h2 {
+    font-family: var(--sans); font-weight: 700; font-size: clamp(22px, 3.4vw, 30px);
+    letter-spacing: -.02em; line-height: 1.06; margin: 8px 0 6px; color: var(--ink);
+  }
+  .modal-sub { font-size: 14px; color: rgba(26, 20, 16, .6); margin: 0 0 22px; line-height: 1.45; }
+
+  .lf-body { display: flex; flex-direction: column; gap: 16px; }
+  .lf-body .field { display: flex; flex-direction: column; gap: 6px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .lf-body label, .cards legend { font-size: 12.5px; font-weight: 500; letter-spacing: .01em; color: var(--ink); }
+  .lf-body .opt { color: rgba(26, 20, 16, .42); font-weight: 400; }
+  .lf-body input, .lf-body textarea {
+    font-family: var(--sans); font-size: 15px; color: var(--ink);
+    background: rgba(255, 255, 255, .55);
+    border: 1px solid rgba(26, 20, 16, .16); border-radius: 11px;
+    padding: 12px 14px; width: 100%;
+    transition: border-color .2s, background .2s, box-shadow .2s;
+  }
+  .lf-body textarea { resize: vertical; min-height: 76px; }
+  .lf-body input::placeholder, .lf-body textarea::placeholder { color: rgba(26, 20, 16, .35); }
+  .lf-body input:focus, .lf-body textarea:focus {
+    outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(26, 20, 16, .08);
+  }
+  .lf-body input:user-invalid, .lf-body textarea:user-invalid {
+    border-color: #b3402e; background: rgba(179, 64, 46, .06);
+  }
+  .lf-body .err { display: none; font-size: 12px; color: #b3402e; }
+  .lf-body input:user-invalid ~ .err { display: block; }
+
+  .cards { border: none; padding: 0; margin: 0; }
+  .cards legend { padding: 0; margin-bottom: 8px; }
+  .card-opts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .opt-card {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    padding: 12px 6px; border: 1px solid rgba(26, 20, 16, .16); border-radius: 12px;
+    font-size: 13px; font-weight: 500; color: rgba(26, 20, 16, .7); cursor: pointer;
+    transition: border-color .2s, background .2s, color .2s; text-align: center;
+  }
+  .opt-card input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .opt-card:hover { border-color: rgba(26, 20, 16, .4); }
+  .opt-card:has(input:checked) { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .opt-card:has(input:focus-visible) { box-shadow: 0 0 0 3px rgba(26, 20, 16, .14); }
+
+  .lf-foot { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
+  .lf-submit {
+    appearance: none; font-family: var(--sans); font-size: 15px; font-weight: 500;
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ink); color: var(--paper);
+    border: 1px solid var(--ink); border-radius: 999px; padding: 14px 26px; cursor: pointer;
+    transition: background .25s, opacity .25s;
+  }
+  .lf-submit:hover { background: var(--ink-deep); }
+  .lf-submit[disabled] { opacity: .55; cursor: default; }
+  .lf-submit .arrow { transition: transform .25s; display: inline-block; }
+  .lf-submit:hover .arrow { transform: translateX(3px); }
+  .lf-note { font-family: var(--mono); font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; color: rgba(26, 20, 16, .42); }
+  .lf-error { color: #b3402e; font-size: 13px; margin: 2px 0 0; display: none; }
+
+  .lf-success { display: none; flex-direction: column; align-items: center; text-align: center; gap: 8px; padding: 16px 0 6px; }
+  .lf-success .ok { width: 56px; height: 56px; border-radius: 50%; background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .lf-success h3 { font-family: var(--sans); font-weight: 700; font-size: 22px; color: var(--ink); margin: 6px 0 0; }
+  .lf-success p { font-size: 14px; color: rgba(26, 20, 16, .62); margin: 0 0 8px; max-width: 34ch; line-height: 1.45; }
+  .pill-ghost {
+    appearance: none; font-family: var(--sans); font-size: 14px; font-weight: 500;
+    background: transparent; color: var(--ink); border: 1px solid rgba(26, 20, 16, .22);
+    border-radius: 999px; padding: 11px 22px; cursor: pointer; transition: background .2s, color .2s;
+  }
+  .pill-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  .leadForm.sent .lf-body, .leadForm.sent .lf-foot, .leadForm.sent .modal-head { display: none; }
+  .leadForm.sent .lf-success { display: flex; }
+
+  @media (max-width: 520px) {
+    .field-row { grid-template-columns: 1fr; }
+    .card-opts { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (pointer: coarse) {
+    .modal-x, .opt-card, .lf-submit, .pill-ghost, .lf-body input, .lf-body textarea { cursor: auto; }
+  }
 </style>
 </head>
 <body>
@@ -667,10 +785,10 @@
             escribir a info@alasservice.com
             <span class="arrow" aria-hidden="true">→</span>
           </a>
-          <a class="pill pill-line" href="https://cal.com/alasservice" target="_blank" rel="noopener" data-hot data-magnetic>
+          <button type="button" class="pill pill-line" id="openCallForm" data-hot data-magnetic aria-haspopup="dialog">
             agendar una llamada
             <span class="arrow" aria-hidden="true">↗</span>
-          </a>
+          </button>
         </div>
         <div class="actions-meta">respuesta menor a 24 h · sin compromiso</div>
       </div>
@@ -694,6 +812,72 @@
   </footer>
 
   <div class="progress" id="progress"></div>
+
+  <!-- ============ Modal: agendar una llamada ============ -->
+  <dialog class="modal" id="callForm" aria-labelledby="cfTitle">
+    <form class="modal-card leadForm" id="leadForm" novalidate>
+      <button type="button" class="modal-x" data-close aria-label="Cerrar">✕</button>
+
+      <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />
+
+      <header class="modal-head">
+        <span class="modal-kicker">agendar una llamada</span>
+        <h2 id="cfTitle">Cuéntanos en qué andas.</h2>
+        <p class="modal-sub">Una llamada corta para ver cómo podemos ayudarte. Respondemos en menos de 24 h, sin compromiso.</p>
+      </header>
+
+      <div class="lf-body">
+        <div class="field">
+          <label for="cf-name">Nombre</label>
+          <input id="cf-name" name="name" type="text" required autocomplete="name" placeholder="Tu nombre" />
+          <span class="err">Dinos cómo te llamas.</span>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="tu@email.com" />
+            <span class="err">Revisa que el email sea correcto.</span>
+          </div>
+          <div class="field">
+            <label for="cf-phone">Teléfono <span class="opt">(opcional)</span></label>
+            <input id="cf-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+34 600 00 00 00" />
+          </div>
+        </div>
+
+        <fieldset class="cards">
+          <legend>¿Quién eres?</legend>
+          <div class="card-opts">
+            <label class="opt-card"><input type="radio" name="perfil" value="Artista" required /><span>Artista</span></label>
+            <label class="opt-card"><input type="radio" name="perfil" value="Sello" /><span>Sello</span></label>
+            <label class="opt-card"><input type="radio" name="perfil" value="Mánager" /><span>Mánager</span></label>
+            <label class="opt-card"><input type="radio" name="perfil" value="Otro" /><span>Otro</span></label>
+          </div>
+        </fieldset>
+
+        <div class="field">
+          <label for="cf-msg">¿En qué podemos ayudarte? <span class="opt">(opcional)</span></label>
+          <textarea id="cf-msg" name="mensaje" rows="3" placeholder="Contratos, royalties, derechos, distribución…"></textarea>
+        </div>
+      </div>
+
+      <div class="lf-foot">
+        <button type="submit" class="lf-submit">
+          <span class="lf-label">enviar solicitud</span>
+          <span class="arrow" aria-hidden="true">→</span>
+        </button>
+        <span class="lf-note">Solo te contactaremos por este motivo</span>
+        <span class="lf-error" id="cfError">No se pudo enviar. Inténtalo de nuevo o escríbenos a info@alasservice.com.</span>
+      </div>
+
+      <div class="lf-success">
+        <div class="ok" aria-hidden="true">✓</div>
+        <h3>¡Recibido!</h3>
+        <p>Gracias. Te escribimos a tu email en menos de 24 h.</p>
+        <button type="button" class="pill-ghost" data-close>cerrar</button>
+      </div>
+    </form>
+  </dialog>
 
 <script>
 (() => {
@@ -975,6 +1159,56 @@
   });
 })();
 </script>
+
+  <script>
+  /* Modal "agendar una llamada" — abre el formulario y entrega el lead */
+  (() => {
+    const dlg = document.getElementById('callForm');
+    const form = document.getElementById('leadForm');
+    if (!dlg || !form) return;
+    const openBtn = document.getElementById('openCallForm');
+    const errBox = document.getElementById('cfError');
+    const submitBtn = form.querySelector('.lf-submit');
+    const label = form.querySelector('.lf-label');
+
+    /* Los leads se envían a /api/lead (Vercel Function), que los reenvía
+       por SMTP a info@alasservice.com. Las credenciales viven en las
+       variables de entorno de Vercel, nunca aquí. */
+
+    const open  = () => dlg.showModal();
+    const close = () => dlg.close();
+
+    openBtn?.addEventListener('click', open);
+    form.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
+    dlg.addEventListener('click', e => { if (e.target === dlg) close(); });   // clic en el fondo cierra
+    dlg.addEventListener('close', () => setTimeout(() => form.classList.remove('sent'), 250));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      errBox.style.display = 'none';
+      const d = Object.fromEntries(new FormData(form).entries());
+
+      submitBtn.disabled = true;
+      const prev = label.textContent;
+      label.textContent = 'enviando…';
+      try {
+        const res = await fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(d),
+        });
+        if (res.ok) form.classList.add('sent');
+        else throw new Error('fail');
+      } catch (err) {
+        errBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        label.textContent = prev;
+      }
+    });
+  })();
+  </script>
 
 </body>
 </html>
