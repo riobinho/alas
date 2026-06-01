@@ -100,6 +100,43 @@
     .top nav a.hide-sm{display:none}
   }
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+  /* ===================== animaciones ===================== */
+  /* entrada inicial (al cargar, sin depender del scroll) */
+  @media (prefers-reduced-motion:no-preference){
+    @keyframes a-rise{ from{ opacity:0; transform:translateY(16px); } }
+    .kicker{ animation:a-rise .7s var(--ease) both .05s; }
+    .hero .lead{ animation:a-rise .8s var(--ease) both .28s; }
+    .hero h1 .w{ display:inline-block; animation:a-rise .75s var(--ease) backwards; animation-delay:calc(.16s + var(--i) * .085s); }
+  }
+  /* scroll-driven (mejora progresiva: solo donde hay soporte nativo) */
+  @supports ((animation-timeline:view()) and (animation-range:entry)){
+    @media (prefers-reduced-motion:no-preference){
+      /* el hero se desvanece al salir por arriba */
+      .hero{ animation:a-heroout auto linear forwards; animation-timeline:view(); animation-range:exit 0% exit 96%; }
+      @keyframes a-heroout{ to{ opacity:0; transform:translateY(-26px); } }
+
+      /* cada servicio se desvela al entrar */
+      .svc{ animation:a-reveal auto linear both; animation-timeline:view(); animation-range:entry 6% cover 34%; }
+      @keyframes a-reveal{ from{ opacity:0; transform:translateY(42px); } }
+
+      /* texto y botones del CTA */
+      .cta p, .cta .actions{ animation:a-reveal auto linear both; animation-timeline:view(); animation-range:entry 4% cover 48%; }
+
+      /* título del CTA: se ilumina palabra a palabra con el scroll */
+      .cta h2{ view-timeline:--cta; }
+      .cta h2 .w{ display:inline-block; opacity:.2; animation:a-light auto linear forwards; animation-timeline:--cta; }
+      @keyframes a-light{ to{ opacity:1; } }
+      .cta h2 .w:nth-child(1){ animation-range:cover 2% cover 28%; }
+      .cta h2 .w:nth-child(2){ animation-range:cover 9% cover 35%; }
+      .cta h2 .w:nth-child(3){ animation-range:cover 16% cover 42%; }
+      .cta h2 .w:nth-child(4){ animation-range:cover 23% cover 49%; }
+    }
+  }
+  /* sin movimiento para quien lo prefiere: todo visible y quieto */
+  @media (prefers-reduced-motion:reduce){
+    .hero, .svc, .cta p, .cta .actions, .hero h1 .w, .cta h2 .w{ opacity:1 !important; transform:none !important; }
+  }
 </style>
 </head>
 <body>
@@ -115,7 +152,7 @@
   <main class="wrap">
     <section class="hero">
       <span class="kicker">servicios</span>
-      <h1>todo lo que tu<br>música necesita.</h1>
+      <h1><span class="w" style="--i:0">todo</span> <span class="w" style="--i:1">lo</span> <span class="w" style="--i:2">que</span> <span class="w" style="--i:3">tu</span><br><span class="w" style="--i:4">música</span> <span class="w" style="--i:5">necesita.</span></h1>
       <p class="lead">Legal, management, booking, fiscalidad, derechos y desarrollo de carrera. Acompañamos cada etapa de artistas, productores y sellos —para que tú solo tengas que crear.</p>
     </section>
 
@@ -135,7 +172,7 @@
     </section>
 
     <section class="cta">
-      <h2>¿lo tuyo encaja aquí?</h2>
+      <h2><span class="w">¿lo</span> <span class="w">tuyo</span> <span class="w">encaja</span> <span class="w">aquí?</span></h2>
       <p>Cuéntanos tu proyecto y vemos juntos cómo darle forma.</p>
       <div class="actions">
         <a class="pill pill-solid" href="/#agendar">agendar una llamada <span class="arrow" aria-hidden="true">→</span></a>
