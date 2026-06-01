@@ -605,6 +605,7 @@
      MODAL — agendar una llamada
      ========================================================= */
   button.pill { appearance: none; font-family: var(--sans); }
+  html.modal-open { overflow: hidden; }
 
   .modal {
     border: none; padding: 0; background: transparent; color: var(--ink);
@@ -626,7 +627,16 @@
     border-radius: 20px; padding: clamp(26px, 4vw, 42px);
     box-shadow: 0 40px 90px -25px rgba(0, 0, 0, .65);
     max-height: 92dvh; overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(26, 20, 16, .28) transparent;
   }
+  .modal-card::-webkit-scrollbar { width: 11px; }
+  .modal-card::-webkit-scrollbar-track { background: transparent; margin: 20px 0; }
+  .modal-card::-webkit-scrollbar-thumb {
+    background: rgba(26, 20, 16, .24); border-radius: 999px;
+    border: 3px solid transparent; background-clip: padding-box;
+  }
+  .modal-card::-webkit-scrollbar-thumb:hover { background: rgba(26, 20, 16, .4); }
   .modal-x {
     position: absolute; top: 16px; right: 16px;
     width: 36px; height: 36px; border-radius: 50%;
@@ -1175,13 +1185,17 @@
        por SMTP a info@alasservice.com. Las credenciales viven en las
        variables de entorno de Vercel, nunca aquí. */
 
-    const open  = () => dlg.showModal();
+    const root = document.documentElement;
+    const open  = () => { root.classList.add('modal-open'); dlg.showModal(); };
     const close = () => dlg.close();
 
     openBtn?.addEventListener('click', open);
     form.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', close));
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });   // clic en el fondo cierra
-    dlg.addEventListener('close', () => setTimeout(() => form.classList.remove('sent'), 250));
+    dlg.addEventListener('close', () => {
+      root.classList.remove('modal-open');
+      setTimeout(() => form.classList.remove('sent'), 250);
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
