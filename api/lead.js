@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
       `</div>`;
 
     await transporter.sendMail({
-      from: `"Web alas" <${SMTP_USER}>`,
+      from: `"alas" <${SMTP_USER}>`,
       to,
       replyTo: `"${name}" <${email}>`,
       subject: `Nuevo lead - ${name}${perfil ? ' (' + perfil + ')' : ''}`,
