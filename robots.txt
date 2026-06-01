@@ -1,0 +1,6 @@
+# robots.txt — alas · asesoría legal de artistas y sellos
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://alasservice.com/sitemap.xml
