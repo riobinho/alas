@@ -82,7 +82,7 @@
   /* CTA */
   .cta{padding:clamp(80px,14vh,150px) 0 clamp(60px,9vh,100px);text-align:left}
   .cta h2{font-size:clamp(34px,6vw,72px);font-weight:500;letter-spacing:-.04em;text-transform:lowercase;line-height:1.0}
-  .cta p{color:var(--paper-dim);margin:22px 0 0;max-width:460px;font-size:clamp(15px,1.8vw,18px)}
+  .cta p{color:var(--paper-dim);margin:22px 0 0;max-width:540px;font-size:clamp(15px,1.8vw,18px)}
   .actions{display:flex;flex-wrap:wrap;gap:14px;justify-content:flex-start;margin-top:38px}
   .pill{display:inline-flex;align-items:center;gap:10px;font-size:15px;font-weight:500;padding:15px 28px;border-radius:999px;
         text-decoration:none;border:1px solid var(--paper);transition:background .25s,color .25s}
@@ -140,22 +140,13 @@
       .svc{ animation:a-reveal auto linear both; animation-timeline:view(); animation-range:entry 6% cover 34%; }
       @keyframes a-reveal{ from{ opacity:0; transform:translateY(42px); } }
 
-      /* texto y botones del CTA */
-      .cta p, .cta .actions{ animation:a-reveal auto linear both; animation-timeline:view(); animation-range:entry 4% cover 48%; }
-
-      /* título del CTA: se ilumina palabra a palabra con el scroll */
-      .cta h2{ view-timeline:--cta; }
-      .cta h2 .w{ display:inline-block; opacity:.2; animation:a-light auto linear forwards; animation-timeline:--cta; }
-      @keyframes a-light{ to{ opacity:1; } }
-      .cta h2 .w:nth-child(1){ animation-range:cover 2% cover 28%; }
-      .cta h2 .w:nth-child(2){ animation-range:cover 9% cover 35%; }
-      .cta h2 .w:nth-child(3){ animation-range:cover 16% cover 42%; }
-      .cta h2 .w:nth-child(4){ animation-range:cover 23% cover 49%; }
+      /* CTA: título, texto y botones se revelan al entrar (el título queda nítido) */
+      .cta h2, .cta p, .cta .actions{ animation:a-reveal auto linear both; animation-timeline:view(); animation-range:entry 4% cover 46%; }
     }
   }
   /* sin movimiento para quien lo prefiere: todo visible y quieto */
   @media (prefers-reduced-motion:reduce){
-    .hero, .svc, .cta p, .cta .actions, .hero h1 .w, .cta h2 .w{ opacity:1 !important; transform:none !important; }
+    .hero, .svc, .cta h2, .cta p, .cta .actions, .hero h1 .w{ opacity:1 !important; transform:none !important; }
   }
 </style>
 </head>
@@ -194,11 +185,11 @@
     </section>
 
     <section class="cta">
-      <h2><span class="w">¿lo</span> <span class="w">tuyo</span> <span class="w">encaja</span> <span class="w">aquí?</span></h2>
+      <h2>¿lo tuyo encaja aquí?</h2>
       <p>Cuéntanos tu proyecto y vemos juntos cómo darle forma.</p>
       <div class="actions">
         <a class="pill pill-solid" href="/#agendar">agendar una llamada <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="pill pill-line" href="mailto:info@alasservice.com?subject=Hola%20alas">escribir a info@alasservice.com <span class="arrow" aria-hidden="true">↗</span></a>
+        <a class="pill pill-line" href="mailto:info@alasservice.com?subject=Hola%20alas">escríbenos <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
     </section>
   </main>
