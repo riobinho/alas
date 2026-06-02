@@ -4,6 +4,26 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+<!-- Consent Mode v2: la analítica queda DENEGADA por defecto hasta que el usuario acepte -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'granted',
+    'security_storage': 'granted',
+    'wait_for_update': 500
+  });
+  try {
+    if (localStorage.getItem('alas_consent') === 'granted') {
+      gtag('consent', 'update', { 'analytics_storage': 'granted' });
+    }
+  } catch (e) {}
+</script>
+
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -799,6 +819,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .modal-x, .opt-card, .lf-submit, .pill-ghost, .lf-body input, .lf-body textarea { cursor: auto; }
   }
 
+  /* ===== banner de consentimiento de cookies (RGPD) ===== */
+  .cc{position:fixed;left:0;right:0;bottom:0;z-index:9000;display:none;
+    padding:16px clamp(16px,4vw,28px);gap:18px;align-items:center;justify-content:center;flex-wrap:wrap;
+    background:rgba(16,11,8,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+    border-top:1px solid rgba(239,233,220,.14)}
+  .cc.show{display:flex}
+  .cc p{flex:1 1 320px;margin:0;font-size:13px;line-height:1.5;color:rgba(239,233,220,.72);max-width:64ch}
+  .cc-actions{display:flex;gap:10px;flex:0 0 auto}
+  .cc button{font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:-.01em;
+    padding:10px 20px;border-radius:999px;border:1px solid transparent;transition:opacity .2s,border-color .2s,background .2s}
+  .cc .cc-no{background:transparent;border-color:rgba(239,233,220,.32);color:#efe9dc}
+  .cc .cc-no:hover{border-color:rgba(239,233,220,.62)}
+  .cc .cc-yes{background:#d4c089;color:#1a1410}
+  .cc .cc-yes:hover{opacity:.88}
+  @media (max-width:560px){.cc{gap:12px}.cc-actions{flex:1 1 100%}.cc button{flex:1}}
+
   /* transición entre páginas (coherente con /servicios) */
   @media (prefers-reduced-motion: no-preference) {
     @view-transition { navigation: auto; }
@@ -1310,8 +1346,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(d),
         });
-        if (res.ok) form.classList.add('sent');
-        else throw new Error('fail');
+        if (res.ok) {
+          form.classList.add('sent');
+          /* lead enviado: evento para GA4 vía GTM (sin datos personales) */
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'generate_lead', lead_type: (d.perfil || 'sin_especificar') });
+        } else throw new Error('fail');
       } catch (err) {
         errBox.style.display = 'block';
       } finally {
@@ -1319,6 +1359,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         label.textContent = prev;
       }
     });
+  })();
+  </script>
+
+  <!-- Banner de consentimiento de cookies (RGPD) -->
+  <div class="cc" id="cookieConsent" role="region" aria-label="Aviso de cookies">
+    <p>Usamos cookies de analítica (Google Analytics) para entender cómo se usa la web. Solo se activan si las aceptas; puedes rechazarlas sin perder ninguna funcionalidad.</p>
+    <div class="cc-actions">
+      <button type="button" class="cc-no" id="ccNo">Rechazar</button>
+      <button type="button" class="cc-yes" id="ccYes">Aceptar</button>
+    </div>
+  </div>
+  <script>
+  (function(){
+    var KEY = 'alas_consent';
+    var el = document.getElementById('cookieConsent');
+    if (!el) return;
+    var saved = null;
+    try { saved = localStorage.getItem(KEY); } catch (e) {}
+    function update(state){
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+      gtag('consent', 'update', { 'analytics_storage': state });
+    }
+    function choose(state){
+      try { localStorage.setItem(KEY, state); } catch (e) {}
+      update(state);
+      el.classList.remove('show');
+    }
+    if (saved !== 'granted' && saved !== 'denied') el.classList.add('show');
+    var yes = document.getElementById('ccYes'), no = document.getElementById('ccNo');
+    if (yes) yes.addEventListener('click', function(){ choose('granted'); });
+    if (no)  no.addEventListener('click', function(){ choose('denied'); });
   })();
   </script>
 
