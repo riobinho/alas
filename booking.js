@@ -8,7 +8,15 @@
   var CSS = `
   .bm{border:none;padding:0;margin:auto;color:var(--paper);background:var(--ink);max-width:520px;width:calc(100% - 32px);
     border:1px solid var(--rule);border-radius:18px;box-shadow:0 40px 100px -30px rgba(0,0,0,.8);
-    max-height:calc(100dvh - 40px);overflow:auto;cursor:auto}
+    max-height:calc(100dvh - 40px);overflow:auto;cursor:auto;
+    --sb-thumb:rgba(239,233,220,.26);--sb-track:transparent;
+    scrollbar-width:thin;scrollbar-color:var(--sb-thumb) var(--sb-track)}
+  @supports not (scrollbar-color:auto){
+    .bm::-webkit-scrollbar{width:11px}
+    .bm::-webkit-scrollbar-track{background:var(--sb-track)}
+    .bm::-webkit-scrollbar-thumb{background:var(--sb-thumb);border-radius:999px;border:3px solid transparent;background-clip:padding-box}
+    .bm::-webkit-scrollbar-thumb:hover{background:rgba(239,233,220,.4)}
+  }
   .bm::backdrop{background:rgba(10,7,5,.62);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
   .bm[open]{animation:bm-in .3s cubic-bezier(.22,.65,.12,1)}
   @keyframes bm-in{from{opacity:0;transform:translateY(12px)}}
@@ -86,6 +94,19 @@
     var submitBtn = dlg.querySelector('.bm-submit');
     var label = dlg.querySelector('.bm-label');
 
+    /* Bloquea el scroll del fondo mientras el modal está abierto (evita la
+       scrollbar de la página junto a la del modal), compensando su ancho para
+       que el contenido no dé un salto. */
+    function lockScroll(){
+      var sbw = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.overflow = 'hidden';
+      if (sbw > 0) document.documentElement.style.paddingRight = sbw + 'px';
+    }
+    function unlockScroll(){
+      document.documentElement.style.overflow = '';
+      document.documentElement.style.paddingRight = '';
+    }
+
     function open(artista) {
       // Sin soporte de <dialog>: caemos a la página de contratación
       if (typeof dlg.showModal !== 'function') {
@@ -98,6 +119,7 @@
       titleEl.textContent = artista ? ('contratar a ' + artista) : 'contratación';
       if (errBox) errBox.style.display = 'none';
       dlg.showModal();
+      lockScroll();
     }
 
     triggers.forEach(function (btn) {
@@ -105,6 +127,7 @@
     });
     dlg.querySelector('.bm-x').addEventListener('click', function () { dlg.close(); });
     dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('close', unlockScroll);
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
