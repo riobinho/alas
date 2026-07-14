@@ -95,14 +95,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
   /* hero a sangre completa */
   .a-hero{position:relative;height:clamp(420px,66vh,660px);overflow:hidden}
-  .a-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
-  /* desenfoque progresivo del borde inferior: la foto se funde difuminada con la pagina */
-  .a-hero::before{content:"";position:absolute;left:0;right:0;bottom:0;height:48%;z-index:1;pointer-events:none;
-    -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
-    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 70%);
-    mask-image:linear-gradient(to bottom,transparent,#000 70%)}
+  .a-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;
+    -webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent 100%);
+    mask-image:linear-gradient(to bottom,#000 60%,transparent 100%)}
+  /* la foto se funde con la seccion siguiente: se desvanece a transparente dejando ver
+     el mismo fondo, con desenfoque progresivo. Asi no queda linea de corte */
+  .a-hero::before{content:"";position:absolute;left:0;right:0;bottom:0;height:52%;z-index:1;pointer-events:none;
+    -webkit-backdrop-filter:blur(11px);backdrop-filter:blur(11px);
+    -webkit-mask-image:linear-gradient(to bottom,transparent,#000 60%);
+    mask-image:linear-gradient(to bottom,transparent,#000 60%)}
   .a-hero::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
-    background:linear-gradient(to top,var(--ink-deep) 1%,rgba(16,11,8,.42) 40%,rgba(16,11,8,.04) 66%,rgba(16,11,8,.5) 100%)}
+    background:linear-gradient(to top,transparent 0%,rgba(16,11,8,.62) 12%,rgba(16,11,8,.24) 34%,transparent 60%,rgba(16,11,8,.42) 100%)}
   .a-back{position:absolute;top:86px;left:clamp(24px,4vw,56px);z-index:3;display:inline-flex;align-items:center;gap:7px;
     font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);text-decoration:none;
     background:rgba(16,11,8,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);

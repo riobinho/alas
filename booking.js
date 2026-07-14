@@ -30,7 +30,7 @@
   .bm .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .bm label{display:block;font-size:12.5px;font-weight:500;color:var(--paper);margin-bottom:6px}
   .bm label .opt{color:var(--paper-quiet);font-weight:400}
-  .bm input,.bm textarea{width:100%;font-family:var(--sans);font-size:15px;color:var(--paper);background:rgba(239,233,220,.04);
+  .bm input,.bm textarea{width:100%;font-family:var(--sans);font-size:16px;color:var(--paper);background:rgba(239,233,220,.04);
     border:1px solid var(--rule);border-radius:11px;padding:12px 14px;cursor:text;transition:border-color .2s,background .2s}
   .bm input[type=date]{color-scheme:dark}
   .bm input::placeholder,.bm textarea::placeholder{color:rgba(239,233,220,.32)}
@@ -49,7 +49,14 @@
   .bm-success p{color:var(--paper-dim);font-size:14.5px;line-height:1.6;max-width:40ch}
   .bm.sent .bm-fields{display:none}
   .bm.sent .bm-success{display:flex}
-  @media (max-width:520px){.bm .two{grid-template-columns:1fr}.bm{width:calc(100% - 18px)}}`;
+  @media (max-width:520px){
+    .bm .two{grid-template-columns:1fr}
+    .bm{width:calc(100% - 18px)}
+    .bm-inner{padding:22px 18px 26px}
+    .bm-title{margin:10px 0 18px}
+    .bm .field{margin-bottom:12px}
+    .bm textarea{min-height:78px}
+  }`;
 
   function init() {
     var triggers = document.querySelectorAll('[data-book]');
