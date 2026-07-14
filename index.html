@@ -496,6 +496,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .pill-solid:hover { color: var(--paper); }
   .pill-line:hover  { color: var(--ink); }
   .pill .arrow { transition: transform 260ms ease; display: inline-block; }
+  .arrow svg { width: 1em; height: 1em; vertical-align: -.12em; }
   .pill:hover .arrow { transform: translate(3px, -3px); }
   .pill-solid:hover .arrow { transform: translateX(3px); }
 
@@ -923,7 +924,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </a>
           <button type="button" class="pill pill-line" id="openCallForm" data-hot data-magnetic aria-haspopup="dialog">
             agendar una llamada
-            <span class="arrow" aria-hidden="true">↗</span>
+            <span class="arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg></span>
           </button>
         </div>
         <div class="actions-meta">respuesta menor a 24 h · sin compromiso</div>
