@@ -25,6 +25,13 @@ module.exports = async (req, res) => {
     const phone = (b.phone || '').trim();
     const perfil = (b.perfil || '').trim();
     const mensaje = (b.mensaje || '').trim();
+    // Campos del formulario de contratación de artistas (opcionales)
+    const tipo = (b.tipo || '').trim();
+    const artista = (b.artista || '').trim();
+    const evento = (b.evento || '').trim();
+    const fecha = (b.fecha || '').trim();
+    const ubicacion = (b.ubicacion || '').trim();
+    const isBooking = tipo === 'contratacion' || !!artista;
 
     if (!name || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
       return res.status(400).json({ error: 'Faltan datos o el email no es válido' });
@@ -45,24 +52,39 @@ module.exports = async (req, res) => {
     });
 
     const to = LEAD_TO || SMTP_USER;
+
+    // Construimos las filas según el tipo de solicitud
+    const heading = isBooking ? 'Nueva solicitud de contratación' : 'Nuevo lead desde la web de alas';
+    const rows = [['Nombre', name], ['Email', email]];
+    if (isBooking) {
+      rows.push(['Artista', artista || '-']);
+      if (evento) rows.push(['Evento', evento]);
+      if (fecha) rows.push(['Fecha', fecha]);
+      if (ubicacion) rows.push(['Ubicación', ubicacion]);
+    } else {
+      rows.push(['Teléfono', phone || '-']);
+      rows.push(['Perfil', perfil || '-']);
+    }
+
     const text =
-      `Nuevo lead desde la web de alas\n\n` +
-      `Nombre:   ${name}\n` +
-      `Email:    ${email}\n` +
-      `Telefono: ${phone || '-'}\n` +
-      `Perfil:   ${perfil || '-'}\n\n` +
-      `Mensaje:\n${mensaje || '-'}\n`;
+      `${heading}\n\n` +
+      rows.map(([k, v]) => `${(k + ':').padEnd(11)}${v}`).join('\n') +
+      `\n\nMensaje:\n${mensaje || '-'}\n`;
+
+    const htmlRows = rows
+      .map(([k, v]) => {
+        const val =
+          k === 'Email' ? `<a href="mailto:${esc(v)}">${esc(v)}</a>` :
+          k === 'Nombre' ? `<b>${esc(v)}</b>` : esc(v);
+        return `<tr><td style="padding:4px 18px 4px 0;color:#6b6258">${k}</td><td style="padding:4px 0">${val || '-'}</td></tr>`;
+      })
+      .join('');
 
     const html =
       `<div style="font-family:Arial,Helvetica,sans-serif;color:#1a1410;line-height:1.6">` +
-      `<h2 style="margin:0 0 2px">Nuevo lead &mdash; agendar llamada</h2>` +
+      `<h2 style="margin:0 0 2px">${esc(heading)}</h2>` +
       `<p style="color:#6b6258;margin:0 0 16px;font-size:13px">desde la web de alas</p>` +
-      `<table style="border-collapse:collapse;font-size:14px">` +
-      `<tr><td style="padding:4px 18px 4px 0;color:#6b6258">Nombre</td><td style="padding:4px 0"><b>${esc(name)}</b></td></tr>` +
-      `<tr><td style="padding:4px 18px 4px 0;color:#6b6258">Email</td><td style="padding:4px 0"><a href="mailto:${esc(email)}">${esc(email)}</a></td></tr>` +
-      `<tr><td style="padding:4px 18px 4px 0;color:#6b6258">Telefono</td><td style="padding:4px 0">${esc(phone) || '-'}</td></tr>` +
-      `<tr><td style="padding:4px 18px 4px 0;color:#6b6258">Perfil</td><td style="padding:4px 0">${esc(perfil) || '-'}</td></tr>` +
-      `</table>` +
+      `<table style="border-collapse:collapse;font-size:14px">${htmlRows}</table>` +
       `<p style="margin:16px 0 4px;color:#6b6258;font-size:14px">Mensaje</p>` +
       `<p style="margin:0;white-space:pre-wrap;font-size:14px">${esc(mensaje) || '-'}</p>` +
       `</div>`;
@@ -71,7 +93,9 @@ module.exports = async (req, res) => {
       from: `"alas" <${SMTP_USER}>`,
       to,
       replyTo: `"${name}" <${email}>`,
-      subject: `Nuevo lead - ${name}${perfil ? ' (' + perfil + ')' : ''}`,
+      subject: isBooking
+        ? `Contratación${artista ? ' · ' + artista : ''} — ${name}`
+        : `Nuevo lead - ${name}${perfil ? ' (' + perfil + ')' : ''}`,
       text,
       html,
     });
