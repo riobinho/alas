@@ -48,12 +48,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:title" content="alberrrt — Roster de Alas" />
 <meta property="og:description" content="Productor de la escena alternativa española en el roster de Alas. Top tracks y contratación." />
 <meta property="og:url" content="https://alasservice.com/artistas/alberrrt" />
-<meta property="og:image" content="https://alasservice.com/img/alberrrt.webp" />
-<meta property="og:image:type" content="image/webp" />
-<meta property="og:image:width" content="500" />
-<meta property="og:image:height" content="500" />
+<meta property="og:image" content="https://alasservice.com/img/alberrrt-foto.jpeg" />
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content="1067" />
+<meta property="og:image:height" content="1600" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:image" content="https://alasservice.com/img/alberrrt.webp" />
+<meta name="twitter:image" content="https://alasservice.com/img/alberrrt-foto.jpeg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -125,6 +125,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   .a-sec p{color:var(--paper-dim);font-size:clamp(15px,1.6vw,17px);line-height:1.8;max-width:66ch}
   .spotify-embed{border-radius:12px;overflow:hidden;border:1px solid var(--rule)}
   .spotify-embed iframe{width:100%;border:0;display:block}
+  .a-works{display:grid;grid-template-columns:1fr 1fr;gap:clamp(14px,2vw,20px)}
+  .work{display:block;text-decoration:none;color:inherit}
+  .work-media{position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--rule);background:#28241f;aspect-ratio:1/1}
+  .work-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .55s var(--ease)}
+  .work-media::after{content:"";position:absolute;inset:0;background:rgba(16,11,8,.34);opacity:0;transition:opacity .3s;z-index:1}
+  .work-play{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%) scale(.94);opacity:0;pointer-events:none;
+    display:inline-flex;align-items:center;gap:7px;font-family:var(--sans);font-weight:500;font-size:13px;letter-spacing:-.01em;
+    color:#1a1410;background:var(--paper);border-radius:999px;padding:9px 16px;transition:opacity .3s,transform .3s}
+  .work-play svg{width:13px;height:13px}
+  .work-name{font-family:var(--sans);font-weight:500;font-size:clamp(15px,1.7vw,17px);letter-spacing:-.02em;line-height:1.2;margin-top:12px}
+  .work-meta{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--paper-quiet);margin-top:5px}
+  @media (hover:hover) and (pointer:fine){
+    .work:hover .work-media img{transform:scale(1.05)}
+    .work:hover .work-media::after{opacity:1}
+    .work:hover .work-play{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  }
 
   .a-card{background:var(--ink-soft);border:1px solid var(--rule);border-radius:20px;padding:clamp(22px,2.4vw,30px)}
   .btn-solid,.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:9px;width:100%;
@@ -247,7 +263,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <main>
     <section class="a-hero">
-      <img src="/img/alberrrt.webp" alt="alberrrt" width="500" height="500" fetchpriority="high" />
+      <img src="/img/alberrrt-foto.jpeg" alt="alberrrt" width="1067" height="1600" fetchpriority="high" />
       <a href="/artistas" class="a-back" data-hot>← roster</a>
       <div class="a-htitle">
         <span class="kicker">roster · productor</span>
@@ -260,6 +276,27 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <section class="a-sec">
           <h2>biografía</h2>
           <p>alberrrt es un productor de la escena alternativa española, de sonido agresivo y eléctrico. Ha trabajado para artistas como Thatkid, Mvrk o Biberon, y forma parte del proyecto Spirritual junto al cantante Mau —su colaborador más fiel—, con quien ha publicado tres trabajos. En directo, su música se convierte en una explosión sonora dentro de la nueva escena urbana y experimental.</p>
+        </section>
+        <section class="a-sec">
+          <h2>trabajos destacados</h2>
+          <div class="a-works">
+            <a class="work" href="https://open.spotify.com/album/6jRvXrEl5BX8MovqZqyYan" target="_blank" rel="noopener" data-hot>
+              <div class="work-media">
+                <img src="/img/spirrrritual%203.webp" alt="Portada del álbum Spirrritual 3" width="640" height="640" loading="lazy" />
+                <span class="work-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>escuchar</span>
+              </div>
+              <div class="work-name">Spirrritual 3</div>
+              <div class="work-meta">álbum · spotify</div>
+            </a>
+            <a class="work" href="https://open.spotify.com/album/6xUl4WpxQ62dVWbv2RgkKB" target="_blank" rel="noopener" data-hot>
+              <div class="work-media">
+                <img src="/img/spiritual%20punk.webp" alt="Portada del álbum Spiritual Punk" width="640" height="640" loading="lazy" />
+                <span class="work-play"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>escuchar</span>
+              </div>
+              <div class="work-name">Spiritual Punk</div>
+              <div class="work-meta">álbum · spotify</div>
+            </a>
+          </div>
         </section>
         <section class="a-sec">
           <h2>top tracks</h2>
@@ -302,7 +339,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     "@type": "MusicGroup",
     "name": "alberrrt",
     "url": "https://alasservice.com/artistas/alberrrt",
-    "image": "https://alasservice.com/img/alberrrt.webp",
+    "image": "https://alasservice.com/img/alberrrt-foto.jpeg",
     "genre": ["Música alternativa", "Electrónica", "Experimental", "Música urbana"],
     "sameAs": [
       "https://open.spotify.com/artist/61XLUqvPBrCxGfczvrm4n3",
